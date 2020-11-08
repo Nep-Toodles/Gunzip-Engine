@@ -7,16 +7,23 @@
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="frameworks/materialize.css"/>
     <script src="index.js"></script>
-    <script src="frameworks/crafty.js"></script>
     <script src="frameworks/materialize.min.js"></script>
+    <script src="frameworks/jquery.min.js"></script>
    
 </head>
 <body>
     <div class="panel blue lighten-1">
-        <button>SceneView</button> <button>Script</button>
+        <button id="sceneView" style="width:50%;font-size:large" class="grey white-text darken-3 waves-white btn waves-effect">SceneView <i class="material-icons big">crop_landscape</i></button> 
+        <button id="scriptView" style="width:50%;font-size:large" class="waves-effect right-align btn grey right"><i class="large material-icons big">code</i> Script</button>
     </div>
-    <button class="btn blue lighten-1 white-text" id="addComponent">Add+</button>
-    <button>Run </button>
+    <div id="menus">
+        <div class="pannel" id="scenesMenu">
+            <canvas class="card-pannel left"></canvas>
+        </div>
+        <div>
+
+        </div>
+    </div>
     <div id="GameWindow">
     </div>
 </body>
