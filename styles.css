@@ -4,6 +4,13 @@
     font-weight: 400;
     src: url(frameworks/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
   }
+#editor { 
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 630px;
+}
 
 html{
     padding: 0%;

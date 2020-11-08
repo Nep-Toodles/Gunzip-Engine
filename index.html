@@ -6,10 +6,11 @@
     <title>Gunzip Engine</title>
     <link rel="stylesheet" href="styles.css"/>
     <link rel="stylesheet" href="frameworks/materialize.css"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" crossorigin="anonymous"></script>
     <script src="index.js"></script>
     <script src="frameworks/materialize.min.js"></script>
-    <script src="frameworks/jquery.min.js"></script>
-   
+    
 </head>
 <body>
     <div class="panel blue lighten-1">
@@ -17,14 +18,23 @@
         <button id="scriptView" style="width:50%;font-size:large" class="waves-effect right-align btn grey right"><i class="large material-icons big">code</i> Script</button>
     </div>
     <div id="menus">
-        <div class="pannel" id="scenesMenu">
-            <canvas class="card-pannel left"></canvas>
+        <div id="scenesMenu">
+            <canvas id="canvas">
+                Sorry Canvas Api is not supported OR if u r lucky you have disabled javascript here fool Enable it NOwwwwwwwwww 
+                <h1>Or lEaVe</h1>
+            </canvas>
         </div>
         <div>
 
         </div>
     </div>
-    <div id="GameWindow">
+    <div id="scriptingWindow">
+        <div id="editor">//Write Your Code From here</div>
     </div>
+    <script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+     editor.session.setMode("ace/mode/javascript");
+    </script>
 </body>
 </html>
