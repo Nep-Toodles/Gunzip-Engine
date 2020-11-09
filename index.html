@@ -1,65 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gunzip Engine</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="frameworks/materialize.css" />
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous"></script>
-    <script src="frameworks/jquery.js"></script>
-    <script src="frameworks/crafty.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
+    <title>Gunzip</title>
     <script src="frameworks/materialize.min.js"></script>
-
+    <script src="frameworks/jquery.js"></script>
+    <link rel="stylesheet" href="frameworks/materialize.min.css"> 
 </head>
-
 <body>
-    <div class="panel blue lighten-1">
-        <button id="sceneView" style="width:50%;font-size:large"
-            class="grey white-text darken-3 waves-white btn waves-effect">SceneView <i
-                class="material-icons big">crop_landscape</i></button>
-        <button id="scriptView" style="width:50%;font-size:large" class="waves-effect right-align btn grey right"><i
-                class="large material-icons big">code</i> Script</button>
-    </div>
-    <div id="menus">
-        <div id="scenesMenu">
-            <div class="row grey lighten-2 top">
-                <button style="width: 6%;" id="stop" class="btn right grey"><i class="material-icons">stop</i></button>
-                <button style="width: 6%;" id="run" class="btn right grey"><i class="material-icons">play_arrow</i></button>
-                <button style="width: 6%;" id="debug" class="btn right grey darken-2"><i
-                        class="material-icons">play_circle_filled</i></button>
-                <button style="width: 3%;" id="build" class="btn left grey darken-2"><i
-                        class="material-icons">build</i></button>
-            </div>
-            <div id="display">
-                <div class="debugger">
-                    
-                </div>
-                <iframe id="iframe">
-                    Sorry Looks like u disabled javascript :/ if it is a stupid experiment dont do it please
-                </iframe>
-            </div>
-        </div>
-        <div>
-
-        </div>
-    </div>
-    <div id="scriptingWindow">
-
-        <div id="files" style="width: auto;height: 100%;" class="pannel blue lighten-3 row">
-            <div id="init" style="width: 49%;" class="btn waves-effect huge blue lighten-1">init.<i>js</i> <i
-                    class="material-icons">settings_ethernet</i></div>
-            <div id="update" style="width: 50%;" class="btn waves-effect blue lighten-1">update.<i>js</i> <i
-                    class="material-icons">settings_ethernet</i></div>
-            <div id="editorInit">//Your code will be saved automatically and will be loaded if you click here :>
-                Crafty.init("canvas") //The Default canvas
-            </div>
-            <div id="editorUpdate">//Your code will be saved automatically and will be loaded if you click here :></div>
-        </div>
+    <button class="btn grey">New Project</button>
 </body>
-
 </html>
