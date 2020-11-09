@@ -116,7 +116,18 @@ window.onload = function () {
     }, 1)
   }
   document.getElementById("build").onclick = () => {
-
+    iframe.srcdoc = `<html>
+      <head>
+      <title>Made With Gunzip Engine</title>
+      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+      </head>
+      <body>
+      <div id='canvas'>
+      
+      </div><script>` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);` + `</script></body>
+      </html>`;
+    var blob = new Blob([iframe.srcdoc.toString()], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, "game.gunz.html")
   }
   //Events of Tab windows End
   setInterval(SaveNewCode, 100)
