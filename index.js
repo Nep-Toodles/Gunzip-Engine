@@ -1,6 +1,7 @@
 window.onload = function () {
+  document.getElementById("canvas").style.height = window.innerHeight + "px"
+  document.getElementById("canvas").style.width = window.innerWidth + "px"
   document.getElementById("editorUpdate").style.display = "none"; //by default only one editor is shown 
-  ace.require("ace/ext/language_tools");
   var editorInit = ace.edit("editorInit");
   editorInit.setTheme("ace/theme/monokai");
   editorInit.session.setMode("ace/mode/javascript");
@@ -43,9 +44,9 @@ window.onload = function () {
   document.getElementById("sceneView").onclick = () => {
     document.getElementById("scenesMenu").style.display = "block";
     document.getElementById("scriptingWindow").style.display = "none";
-    setTimeout(() => {
+    /*setTimeout(() => {
       eval(editorInit.getValue() + editorUpdate.getValue())
-    }, 1000)
+    }, 1000)*/
   }
   document.getElementById("scriptView").onclick = () => {
     document.getElementById("scenesMenu").style.display = "none";
@@ -62,7 +63,21 @@ window.onload = function () {
     document.getElementById("editorUpdate").style.display = "none";
 
   }
-
+  document.getElementById("run").onclick = () => {
+    setTimeout(() => {
+      location.reload()
+      window.eval(editorInit.getValue() + editorUpdate.getValue())
+    }, 1000)
+  }
+  document.getElementById("debug").onclick = () => {
+    setTimeout(() => {
+      location.reload()
+      eval(editorInit.getValue() + editorUpdate.getValue())
+    }, 1000)
+  }
+  document.getElementById("openInWindow").onclick = () => {
+    alert("comming Soon")
+  }
   //Events of Tab windows End
   setInterval(SaveNewCode, 100)
 }

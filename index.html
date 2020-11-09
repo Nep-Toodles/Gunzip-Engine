@@ -24,11 +24,18 @@
     </div>
     <div id="menus">
         <div id="scenesMenu">
-            <canvas id="canvas">
+            <div class="row top">
+            <button id="run" class="btn grey"><i class="material-icons">play_arrow</i></button>
+            <button id="debug" class="btn grey darken-2"><i class="material-icons">play_circle_filled</i></button>
+            <button id="openInWindow" class="btn grey darken-2"><i class="material-icons">play_circle_filled</i></button>
+              </div>
+            <div id="display">
+               <canvas id="canvas">
                 Sorry Canvas Api is not supported OR if u r lucky you have disabled javascript here fool Enable it
                 NOwwwwwwwwww
                 <h1>Or lEaVe</h1>
-            </canvas>
+                 </canvas>
+            </div>
         </div>
         <div>
 
@@ -39,7 +46,9 @@
         <div id="files" style="width: auto;height: 100%;" class="pannel blue lighten-3 row">
             <div id="init" style="width: 49%;" class="btn waves-effect huge blue lighten-1">init.<i>js</i> <i class="material-icons">settings_ethernet</i></div>
             <div id="update" style="width: 50%;" class="btn waves-effect blue lighten-1">update.<i>js</i> <i class="material-icons">settings_ethernet</i></div>
-            <div id="editorInit">//Your code will be saved automatically and will be loaded if you click here :> Crafty.init("canvas") //default Canvas</div>
+            <div id="editorInit">//Your code will be saved automatically and will be loaded if you click here :> 
+    Crafty.init("canvas") //The Default canvas
+            </div>
             <div id="editorUpdate">//Your code will be saved automatically and will be loaded if you click here :></div>
         </div>
 </body>
