@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  alert("hello")
   $("#debugger").val("fps")
 })
 window.onload = function () {
