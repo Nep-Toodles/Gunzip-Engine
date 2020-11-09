@@ -1,6 +1,8 @@
-$(document).ready(function(){
-  alert("hello")
-  $("#debugger").val("fps")
+$(document).ready(function () {
+  $("#debugger").val(Crafty.bind(this,function(ev){
+    return ev.dt.toString()
+  }))
+  
 })
 window.onload = function () {
   var iframe = document.getElementById("iframe")
@@ -83,12 +85,12 @@ window.onload = function () {
       iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/crafty/0.9.0/crafty-min.js" integrity="sha512-sDNo6LQrOvKGPViODKABhldkKVProNVaq0COGrTw8PPPlGbCvbQ5Jmx9Q5ubJvmMVEUk468fAHUHfGAl920rQA==" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
       </head>
       <body>
-      <canvas id='canvas'>
+      <div id='canvas'>
       
-      </canvas><script>` + editorInit.getValue() +`setInterval(()=>{`+ editorUpdate.getValue() + `},10)` + `</script></body>
+      </div><script>` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);` + `</script></body>
       </html>`;
     }, 1000)
   }
@@ -98,17 +100,23 @@ window.onload = function () {
       iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/crafty/0.9.0/crafty-min.js" integrity="sha512-sDNo6LQrOvKGPViODKABhldkKVProNVaq0COGrTw8PPPlGbCvbQ5Jmx9Q5ubJvmMVEUk468fAHUHfGAl920rQA==" crossorigin="anonymous"></script>
+      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
       </head>
       <body>
-      <canvas id='canvas'>
+      <div id='canvas'>
       
-      </canvas><script>` + editorInit.getValue() +`setInterval(()=>{`+ editorUpdate.getValue() + `},10)` + `</script></body>
+      </div><script>;window.setInterval(()=>{console.clear()},300);` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);` + `</script></body>
       </html>`;
     }, 1000)
   }
+  document.getElementById("stop").onclick = () => {
+    $("#debugger").show()
+    setTimeout(() => {
+      iframe.srcdoc += `<script>one=true;if(one){Crafty.pause();one=false}</script>`;
+    }, 1)
+  }
   document.getElementById("build").onclick = () => {
-   
+
   }
   //Events of Tab windows End
   setInterval(SaveNewCode, 100)
