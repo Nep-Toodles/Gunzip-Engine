@@ -88,7 +88,7 @@ window.onload = function () {
       <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
       </head>
       <body>
-      <div id='canvas'>
+      <div id='canvas' style='position;absolute;width:100%;height:100%;'>
       
       </div><script>` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);` + `</script></body>
       </html>`;
@@ -102,7 +102,7 @@ window.onload = function () {
       <title>Made With Gunzip Engine</title>
       <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
       </head>
-      <body>
+      <body style='position;absolute;width:100%;height:100%;'>
       <div id='canvas'>
       
       </div><script>;window.setInterval(()=>{console.clear()},300);` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);` + `</script></body>
@@ -122,7 +122,7 @@ window.onload = function () {
       <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
       </head>
       <body>
-      <div id='canvas'>
+      <div style='position;absolute;width:100%;height:100%;' id='canvas'>
       
       </div><script>` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);` + `</script></body>
       </html>`;

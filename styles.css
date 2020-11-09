@@ -8,7 +8,8 @@
   width: 100%;
   height: 100%;
   margin: 0%;
-  position: fixed;
+  padding: 0%;
+  position: absolute;
   border: 2px solid rgb(174, 233, 194);
   background-color: white;
 }
@@ -36,7 +37,7 @@ iframe{
 }
 
 html{
-  background-color: rgba(228, 230, 221, 0.596);
+  background-color:grey;
     padding: 0%;
     margin: 0%;
     overflow: hidden;
