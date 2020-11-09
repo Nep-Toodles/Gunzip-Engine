@@ -1,16 +1,21 @@
 window.onload = function () {
   document.getElementById("editorUpdate").style.display = "none"; //by default only one editor is shown 
-
+  ace.require("ace/ext/language_tools");
   var editorInit = ace.edit("editorInit");
   editorInit.setTheme("ace/theme/monokai");
   editorInit.session.setMode("ace/mode/javascript");
   editorInit.setOptions({
-    fontSize: "13pt"
+    fontSize: "13pt",
+    enableBasicAutocompletion: true,
+    enableLiveAutocompletion: true,
   });
   var editorUpdate = ace.edit("editorUpdate");
   editorUpdate.setTheme("ace/theme/monokai");
   editorUpdate.session.setMode("ace/mode/javascript");
   editorUpdate.setOptions({
+    enableBasicAutocompletion: true,
+    enableBasicAutocompletion: true,
+    enableLiveAutocompletion: true,
     fontSize: "13pt"
   });
   codeinit = localStorage.getItem("codeInit")
@@ -26,8 +31,10 @@ window.onload = function () {
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
-    setTimeout(()=>{editorInit.setValue(codeinit)
-      editorUpdate.setValue(codeupdate)},100)
+    setTimeout(() => {
+      editorInit.setValue(codeinit)
+      editorUpdate.setValue(codeupdate)
+    }, 100)
   }
 
   document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
@@ -36,7 +43,9 @@ window.onload = function () {
   document.getElementById("sceneView").onclick = () => {
     document.getElementById("scenesMenu").style.display = "block";
     document.getElementById("scriptingWindow").style.display = "none";
-    setTimeout(()=>{eval(editorInit.getValue() + editorUpdate.getValue())},2000)
+    setTimeout(() => {
+      eval(editorInit.getValue() + editorUpdate.getValue())
+    }, 1000)
   }
   document.getElementById("scriptView").onclick = () => {
     document.getElementById("scenesMenu").style.display = "none";
