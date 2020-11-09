@@ -1,26 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gunzip Engine</title>
-    <link rel="stylesheet" href="styles.css"/>
-    <link rel="stylesheet" href="frameworks/materialize.css"/>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="frameworks/materialize.css" />
     <script src="frameworks/phaser.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" crossorigin="anonymous"></script>
     <script src="index.js"></script>
     <script src="frameworks/materialize.min.js"></script>
-    
+
 </head>
+
 <body>
     <div class="panel blue lighten-1">
-        <button id="sceneView" style="width:50%;font-size:large" class="grey white-text darken-3 waves-white btn waves-effect">SceneView <i class="material-icons big">crop_landscape</i></button> 
-        <button id="scriptView" style="width:50%;font-size:large" class="waves-effect right-align btn grey right"><i class="large material-icons big">code</i> Script</button>
+        <button id="sceneView" style="width:50%;font-size:large"
+            class="grey white-text darken-3 waves-white btn waves-effect">SceneView <i
+                class="material-icons big">crop_landscape</i></button>
+        <button id="scriptView" style="width:50%;font-size:large" class="waves-effect right-align btn grey right"><i
+                class="large material-icons big">code</i> Script</button>
     </div>
     <div id="menus">
         <div id="scenesMenu">
             <canvas id="canvas">
-                Sorry Canvas Api is not supported OR if u r lucky you have disabled javascript here fool Enable it NOwwwwwwwwww 
+                Sorry Canvas Api is not supported OR if u r lucky you have disabled javascript here fool Enable it
+                NOwwwwwwwwww
                 <h1>Or lEaVe</h1>
             </canvas>
         </div>
@@ -29,7 +35,13 @@
         </div>
     </div>
     <div id="scriptingWindow">
-        <div id="editor">//Your code will be saved automatically and will be loaded if you click here :></div>
-    </div>
+
+        <div id="files" style="width: auto;height: 100%;" class="pannel blue lighten-3 row">
+            <div id="init" style="width: 49%;" class="btn waves-effect huge blue lighten-1">init.<i>js</i> <i class="material-icons">settings_ethernet</i></div>
+            <div id="update" style="width: 50%;" class="btn waves-effect blue lighten-1">update.<i>js</i> <i class="material-icons">settings_ethernet</i></div>
+            <div id="editorInit">//Your code will be saved automatically and will be loaded if you click here :></div>
+            <div id="editorUpdate">//Your code will be saved automatically and will be loaded if you click here :></div>
+        </div>
 </body>
+
 </html>

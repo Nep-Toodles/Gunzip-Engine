@@ -1,35 +1,59 @@
+window.onload = function () {
+  document.getElementById("editorUpdate").style.display = "none"; //by default only one editor is shown 
 
-window.onload = function(){
-  var editor = ace.edit("editor");
-  editor.setTheme("ace/theme/monokai");
-  editor.session.setMode("ace/mode/javascript");
-  editor.setOptions({
+  var editorInit = ace.edit("editorInit");
+  editorInit.setTheme("ace/theme/monokai");
+  editorInit.session.setMode("ace/mode/javascript");
+  editorInit.setOptions({
     fontSize: "13pt"
   });
-  var code = localStorage.getItem("code")
-  if(code == undefined || code == null){
-    function SaveNewCode(){
-    localStorage.setItem("code",editor.getValue())
+  var editorUpdate = ace.edit("editorUpdate");
+  editorUpdate.setTheme("ace/theme/monokai");
+  editorUpdate.session.setMode("ace/mode/javascript");
+  editorUpdate.setOptions({
+    fontSize: "13pt"
+  });
+  codeinit = localStorage.getItem("codeInit")
+  codeupdate = localStorage.getItem("codeUpdate")
+
+  if (codeinit == undefined || codeinit == null) {
+    function SaveNewCode() {
+      localStorage.setItem("codeInit", editorInit.getValue())
+      localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
-  }else{
-    function SaveNewCode(){
-    localStorage.setItem("code",editor.getValue())
+  } else {
+    function SaveNewCode() {
+      localStorage.setItem("codeInit", editorInit.getValue())
+      localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
-    editor.setValue(localStorage.getItem("code"))
+    setTimeout(()=>{editorInit.setValue(codeinit)
+      editorUpdate.setValue(codeupdate)},100)
   }
 
   document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
 
   //Events of Tab Window Start
-  document.getElementById("sceneView").onclick =()=>{
+  document.getElementById("sceneView").onclick = () => {
     document.getElementById("scenesMenu").style.display = "block";
     document.getElementById("scriptingWindow").style.display = "none";
-    eval(editor.getValue())
+    setTimeout(()=>{eval(editorInit.getValue() + editorUpdate.getValue())},2000)
   }
-  document.getElementById("scriptView").onclick =()=>{
+  document.getElementById("scriptView").onclick = () => {
     document.getElementById("scenesMenu").style.display = "none";
     document.getElementById("scriptingWindow").style.display = "block";
+
   }
-    //Events of Tab windows End
-  setInterval(SaveNewCode,100)
+  document.getElementById("update").onclick = () => {
+    document.getElementById("editorInit").style.display = "none";
+    document.getElementById("editorUpdate").style.display = "block";
+
+  }
+  document.getElementById("init").onclick = () => {
+    document.getElementById("editorInit").style.display = "block";
+    document.getElementById("editorUpdate").style.display = "none";
+
+  }
+
+  //Events of Tab windows End
+  setInterval(SaveNewCode, 100)
 }
