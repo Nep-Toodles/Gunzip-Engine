@@ -112,7 +112,7 @@ window.onload = function () {
   document.getElementById("stop").onclick = () => {
     $("#debugger").show()
     setTimeout(() => {
-      iframe.srcdoc += `<script>one=true;if(one){Crafty.pause();one=false}</script>`;
+      iframe.srcdoc += `<script>Crafty.pause()</script>`;
     }, 1)
   }
   document.getElementById("build").onclick = () => {
