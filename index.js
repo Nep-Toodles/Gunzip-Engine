@@ -37,10 +37,9 @@ window.onload = function () {
   });
   codeinit = localStorage.getItem("codeInit")
   codeupdate = localStorage.getItem("codeUpdate")
-  setTimeout(() => {
-    editorInit.setValue(codeinit)
-    editorUpdate.setValue(codeupdate)
-  }, 100);
+  editorInit.setValue(codeinit)
+  editorUpdate.setValue(codeupdate)
+
   if (codeinit == undefined || codeinit == null) {
     function SaveNewCode() {
       localStorage.setItem("codeInit", editorInit.getValue())
@@ -51,10 +50,10 @@ window.onload = function () {
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
-    setTimeout(() => {
-      editorInit.setValue(codeinit)
-      editorUpdate.setValue(codeupdate)
-    }, 100);
+
+    editorInit.setValue(codeinit)
+    editorUpdate.setValue(codeupdate)
+
   }
 
   document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
@@ -140,8 +139,9 @@ window.onload = function () {
       
       </div><script>` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);` + `</script></body>
       </html>`;
+      name = prompt("Please Enter Your Game's name")
     var blob = new Blob([iframe.srcdoc.toString()], {type: "text/plain;charset=utf-8"});
-    saveAs(blob, "game.gunz.html")
+    saveAs(blob, name+".gunz.html")
   }
   //Events of Tab windows End
   setInterval(SaveNewCode, 100)
