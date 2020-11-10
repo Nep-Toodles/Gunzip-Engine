@@ -16,7 +16,7 @@ window.onload = function () {
   
   </canvas>
   </body>
-  </html>`
+  </html>`;
   document.getElementById("editorUpdate").style.display = "none"; //by default only one editor is shown 
   var editorInit = ace.edit("editorInit");
   editorInit.setTheme("ace/theme/monokai");
@@ -37,7 +37,10 @@ window.onload = function () {
   });
   codeinit = localStorage.getItem("codeInit")
   codeupdate = localStorage.getItem("codeUpdate")
-
+  setTimeout(() => {
+    editorInit.setValue(codeinit)
+    editorUpdate.setValue(codeupdate)
+  }, 100);
   if (codeinit == undefined || codeinit == null) {
     function SaveNewCode() {
       localStorage.setItem("codeInit", editorInit.getValue())
@@ -51,7 +54,7 @@ window.onload = function () {
     setTimeout(() => {
       editorInit.setValue(codeinit)
       editorUpdate.setValue(codeupdate)
-    }, 100)
+    }, 100);
   }
 
   document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
@@ -81,7 +84,13 @@ window.onload = function () {
   }
   document.getElementById("run").onclick = () => {
     $("#debugger").hide()
+    setTimeout(machet,100);
+    function machet() {
+        //alert("machet");
+        document.getElementById("iframe").contentWindow.focus();
+    }
     setTimeout(() => {
+    
       iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
@@ -95,6 +104,11 @@ window.onload = function () {
     }, 1000)
   }
   document.getElementById("debug").onclick = () => {
+    setTimeout(machet,100);
+    function machet() {
+        //alert("machet");
+        document.getElementById("iframe").contentWindow.focus();
+    }
     $("#debugger").show()
     setTimeout(() => {
       iframe.srcdoc = `<html>
@@ -105,7 +119,7 @@ window.onload = function () {
       <body style='position;absolute;width:100%;height:100%;'>
       <div id='canvas'>
       
-      </div><script>;window.setInterval(()=>{console.clear()},300);` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);` + `</script></body>
+      </div><script>window.setInterval(()=>{console.clear()},300);` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);` + `</script></body>
       </html>`;
     }, 1000)
   }

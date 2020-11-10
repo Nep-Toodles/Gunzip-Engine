@@ -57,7 +57,20 @@
             <div id="update" style="width: 50%;" class="btn waves-effect blue lighten-1">update.<i>js</i> <i
                     class="material-icons">settings_ethernet</i></div>
             <div id="editorInit">//Your code will be saved automatically and will be loaded if you click here :>
-                Crafty.init("canvas") //The Default canvas
+
+window.onload = function(){
+Crafty.init(window.innerWidth,window.innerHeight,document.getElementById("canvas")) //The Default canvas
+ Crafty.e('Floor, 2D, Canvas, Color') //the 2D Canvas and Color are default the floor is just a note
+.attr({x: 0, y: 250, w: 250, h: 10})
+.color('green');
+
+Crafty.e('2D, Canvas, Color, Twoway, Gravity') // Gravity adds gravity to player and twoway means it is a platform character and can move and jump
+.attr({x: 0, y: 0, w: 50, h: 50})
+.color('#F00')
+.twoway(200)
+.gravity('Floor'); //It will ONLY stop when any Object have the note 'floor'
+} // Warning dont put a semicolon here
+//Here you go you made a game
             </div>
             <div id="editorUpdate">//Your code will be saved automatically and will be loaded if you click here :></div>
         </div>
