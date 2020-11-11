@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>Gunzip Engine</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="frameworks/materialize.css" />
+
+    <script src="frameworks/jquery.js"></script>
+    <script src="frameworks/notify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js"
+        integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+        integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+        crossorigin="anonymous"></script>
+    <script src="frameworks/crafty.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
+        integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="
+        crossorigin="anonymous"></script>
+    <script src="index.js"></script>
+    <script src="frameworks/materialize.min.js"></script>
+</head>
+
+<body>
+    <div id="overlay">
+        <div class="panel blue lighten-1">
+            <a href="index.html" class="btn left grey darken-1"><i class="material-icons">fast_rewind</i></a>
+            <button id="sceneView" style="width:49%;font-size:large"
+                class="grey white-text darken-3 waves-white btn left waves-effect">SceneView <i
+                    class="material-icons big">crop_landscape</i></button>
+            <button id="scriptView" style="width:47%;font-size:large" class="waves-effect btn grey left"><i
+                    class="large material-icons big">code</i> Script</button>
+        </div>
+        <div id="menus">
+            <div id="popup-menu">
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var exportElement = document.querySelectorAll('.modal');
+                        var instances = M.Modal.init(exportElement);
+                    });
+                </script>
+
+                <!-- Modal Structure -->
+                <div id="Export" class="modal">
+                    <div class="modal-content">
+                        <h4>Export Options</h4>
+                        <img style="width: 100px;height: auto;" class="img left img-responsive" src="images/html5.png" alt="Html5 Export">
+                        <button class="plain btn btn-plain black" id="build">HTML5 [Super-Fast-Build]</button>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                    </div>
+                </div>
+            </div>
+            <div id="scenesMenu">
+                <div class="row grey lighten-2">
+                    <button style="width: 6%;" id="stop" class="btn right grey"><i
+                            class="material-icons">stop</i></button>
+                    <button style="width: 6%;" id="run" class="btn right grey"><i
+                            class="material-icons">play_arrow</i></button>
+                    <button style="width: 6%;" id="debug" class="btn right grey darken-2"><i
+                            class="material-icons">play_circle_filled</i></button>
+
+                    <button data-target="Export" class="btn modal-trigger" style="width: 9%;" class="btn left grey darken-2"><i
+                            class="material-icons">build</i></button>
+
+                    <label style="position: relative;z-index: 8;width: 4%;" id="colorPicker" class="btn red"><input
+                            style="display: none;" type="color" /> <i style="font-size: large;"
+                            class="large white-text material-icons">color_lens</i></label>
+                    <button id="appName" style="width: 6%;" class="btn waves-effect flow-text "><i></i></button>
+                </div>
+                <div id="display">
+                    <div class="debugger">
+                    </div>
+                    <iframe id="iframe">
+                        Sorry Looks like u disabled javascript :/ if it is a stupid experiment dont do it please
+                    </iframe>
+                    <div style="position: absolute;margin-top: -8.6%;width: 100%;" class="row blue white-text"
+                        id="downInfo">
+                        fps : X : Y :
+                    </div>
+                </div>
+
+            </div>
+            <div>
+
+            </div>
+        </div>
+        <div id="scriptingWindow">
+            <div id="files" style="width: auto;height: 100%;" class="pannel blue lighten-3 row">
+                <div id="init" style="width: 49%;" class="btn waves-effect huge blue lighten-1">init.<i>js</i> <i
+                        class="material-icons">settings_ethernet</i></div>
+                <div id="update" style="width: 50%;" class="btn waves-effect blue lighten-1">update.<i>js</i> <i
+                        class="material-icons">settings_ethernet</i></div>
+                <div id="editorInit">//Your code will be saved automatically and will be loaded if you click here :>
+
+                    window.onload = function(){
+                    Crafty.init(window.innerWidth,window.innerHeight,document.getElementById("canvas")) //The Default
+                    canvas
+                    Crafty.e('Floor, 2D, Canvas, Color') //the 2D Canvas and Color are default the floor is just a note
+                    .attr({x: 0, y: 250, w: 250, h: 10})
+                    .color('green');
+
+                    Crafty.e('2D, Canvas, Color, Twoway, Gravity') // Gravity adds gravity to player and twoway means it
+                    is a platform character and can move and jump
+                    .attr({x: 0, y: 0, w: 50, h: 50})
+                    .color('#F00')
+                    .twoway(200)
+                    .gravity('Floor'); //It will ONLY stop when any Object have the note 'floor'
+                    } // Warning dont put a semicolon here
+                    //Here you go you made a game
+                </div>
+                <div id="editorUpdate">//Your code will be saved automatically and will be loaded if you click here :>
+                </div>
+            </div>
+        </div>
+
+</html>

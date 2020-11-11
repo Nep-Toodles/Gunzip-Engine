@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gunzip</title>
+    <script src="frameworks/materialize.min.js"></script>
+    <script src="frameworks/jquery.js"></script>
+    <link rel="stylesheet" href="frameworks/materialize.css">
+</head>
+
+<body style="margin: 0%;padding: 0%;">
+    <header class="blue row">
+        <div style="margin: 0%;width: 100%;" class="flow-text centar-align blue lighten-3 green-text  card-header ">
+            Gunzip Engine
+        </div>
+    </header>
+    <a style="width:20%;" href="2d.html" class="btn waves-effect lighten-1 grey left">Open Editor</a>
+    <label style="width:20%;" class="btn right large">
+        <input id="projectPicker" accept="" type="file" single style="width:20%;display: none;" value="open Project"
+            class="btn grey waves-effect darken-1 right" />
+        Open Project
+    </label>
+    <br>
+    <br>
+    <br>
+    <br>
+    <a style="width:100%;" class="pannel center-align flow-text green waves-effect lighten-3">Tutorials</a>
+
+
+
+    <script>
+        function readSingleFile(e) {
+            var file = e.target.files[0];
+            if (!file) {
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var contents = e.target.result;
+                displayContents(contents);
+            };
+            reader.readAsText(file);
+        }
+
+        function displayContents(contents) {
+            var JsonProject = JSON.parse(contents)
+            if(JsonProject.codeinit != undefined || JsonProject.codeupdate != undefined){
+                localStorage.setItem("codeInit", JsonProject.codeupdate)
+                localStorage.setItem("codeUpdate", JsonProject.codeinit)
+                window.location.replace("/2d.html")
+            }else{
+                alert("Init.JS is misssing in the file did you remove it? Or try again")
+            }
+            alert(contents)
+        }
+        var file = document.getElementById("projectPicker")
+        file.addEventListener('change', readSingleFile, false);
+
+        window.onbeforeunload = function (e) {
+            e.preventDefault();
+            e.returnValue = 'Really want to quit the program?';
+        };
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function (e) {
+            e = e || window.event;
+
+            if (!e.ctrlKey) return;
+
+            var code = e.which || e.keyCode;
+
+            switch (code) {
+                case 83:
+                case 87:
+                    e.preventDefault();
+                    e.stopPropagation();
+                    break;
+            }
+        };
+    </script>
+</body>
+
+</html>
