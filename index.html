@@ -10,15 +10,30 @@
     <link rel="stylesheet" href="frameworks/materialize.css">
 </head>
 
-<body style="margin: 0%;padding: 0%;">
+<body class="waves-effect blue darken-3 waves-block waves-circle waves-blue" style="width: 100%;height: auto;">
+
+    <a class="waves-effect waves-light btn modal-trigger" href="#engine">Modal</a>
+
+  <div id="engine" class="modal">
+    <div class="modal-content">
+      <h4>Select Your Engine</h4>
+      <a href="2d.html">2D</a>
+      <a href="3d.html">3D</a>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+  </div>
+
+          
     <header class="blue row">
-        <div style="margin: 0%;width: 100%;" class="flow-text centar-align blue lighten-3 green-text  card-header ">
+        <div style="margin: 0%;width: 100%;" class="flow-text center centar-align blue lighten-3 green-text  card-header ">
             Gunzip Engine
         </div>
     </header>
-    <a style="width:20%;" href="2d.html" class="btn waves-effect lighten-1 grey left">Open Editor</a>
+    <a style="width:20%;" class="btn waves-effect lighten-1 grey left" data-target="modal1" class="btn modal-trigger">Open Editor</a>
     <label style="width:20%;" class="btn right large">
-        <input id="projectPicker" accept="" type="file" single style="width:20%;display: none;" value="open Project"
+        <input id="projectPicker"  type="file" single style="width:20%;display: none;" value="open Project"
             class="btn grey waves-effect darken-1 right" />
         Open Project
     </label>
@@ -26,11 +41,15 @@
     <br>
     <br>
     <br>
-    <a style="width:100%;" class="pannel center-align flow-text green waves-effect lighten-3">Tutorials</a>
+    <a style="width:100%;" class="pannel  flow-text green waves-effect lighten-3">Tutorials</a>
 
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems);
+  });
         function readSingleFile(e) {
             var file = e.target.files[0];
             if (!file) {
@@ -40,19 +59,17 @@
             reader.onload = function (e) {
                 var contents = e.target.result;
                 displayContents(contents);
-            };
             reader.readAsText(file);
         }
+    }
 
         function displayContents(contents) {
+            alert(contents)
             var JsonProject = JSON.parse(contents)
-            if(JsonProject.codeinit != undefined || JsonProject.codeupdate != undefined){
-                localStorage.setItem("codeInit", JsonProject.codeupdate)
-                localStorage.setItem("codeUpdate", JsonProject.codeinit)
-                window.location.replace("/2d.html")
-            }else{
-                alert("Init.JS is misssing in the file did you remove it? Or try again")
-            }
+            localStorage.setItem("codeInit", JsonProject.codeupdate)
+            localStorage.setItem("codeUpdate", JsonProject.codeinit)
+            window.location.href = location.hostname +"/2d.html"
+            
             alert(contents)
         }
         var file = document.getElementById("projectPicker")

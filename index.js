@@ -1,33 +1,40 @@
 window.onload = function (event) {
- $.notify.defaults({ className: "success" });
+  keyboardJS.bind("ctrl")
+  $.notify.defaults({
+    className: "success"
+  });
 
   myIframeForDebug = document.getElementById("iframe").contentWindow
+
   function updateDebugger() {
     window.onbeforeunload = function (e) {
       e.preventDefault();
       e.returnValue = 'Really want to quit the program?';
-  };
-  document.addEventListener('contextmenu', event => event.preventDefault());
-  document.onkeydown = function (e) {
+    };
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function (e) {
       e = e || window.event;
-  
+
       if (!e.ctrlKey) return;
-  
+
       var code = e.which || e.keyCode;
-  
+
       switch (code) {
-          case 83:
-          case 87:
-              SaveNewCode()
-              $.notify("saved",{autoHideDelay: 1000,position: 'right bottom'});
-              e.preventDefault();
-              e.stopPropagation();
-              break;
+        case 83:
+        case 87:
+          SaveNewCode()
+          $.notify("saved", {
+            autoHideDelay: 1000,
+            position: 'right bottom'
+          });
+          e.preventDefault();
+          e.stopPropagation();
+          break;
       }
-  };
+    };
     myIframeForDebug.document.addEventListener("mousemove", function (ev) {
-      document.getElementById("downInfo").innerText = "X :" + ev.x + "\t    Y :" + ev.y + "\tScreenX:"+ev.screenX+ "\tScreenY:"+ev.screenY
-      ev.onerror =()=>{
+      document.getElementById("downInfo").innerText = "X :" + ev.x + "\t    Y :" + ev.y + "\tScreenX:" + ev.screenX + "\tScreenY:" + ev.screenY
+      ev.onerror = () => {
         alert("error")
       }
     })
@@ -127,7 +134,7 @@ window.onload = function (event) {
       iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.4.5/pixi.min.js" integrity="sha512-P8gDaMAlo6/WKF67KsF0VdiwGZygvnWi55J42E8mLgD8FGgJRw6wCaC/QlRAH3BlRodzF362lde42KkqoEBeyg==" crossorigin="anonymous"></script>
       </head>
       <body>
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
@@ -150,7 +157,7 @@ window.onload = function (event) {
       iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.4.5/pixi.min.js" integrity="sha512-P8gDaMAlo6/WKF67KsF0VdiwGZygvnWi55J42E8mLgD8FGgJRw6wCaC/QlRAH3BlRodzF362lde42KkqoEBeyg==" crossorigin="anonymous"></script>
       </head>
       <body>
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
@@ -171,7 +178,7 @@ window.onload = function (event) {
     iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.4.5/pixi.min.js" integrity="sha512-P8gDaMAlo6/WKF67KsF0VdiwGZygvnWi55J42E8mLgD8FGgJRw6wCaC/QlRAH3BlRodzF362lde42KkqoEBeyg==" crossorigin="anonymous"></script>
       </head>
       <body>
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
