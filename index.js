@@ -1,5 +1,23 @@
 window.onload = function (event) {
-  keyboardJS.bind("ctrl")
+  
+  function beatify() {
+    var staticWordCompleter = {
+      getCompletions: function(editor, session, pos, prefix, callback) {
+          var wordList = ["document", "var", "let","PIXI","PIXI.application()","function main(){}","Function"];
+          callback(null, wordList.map(function(word) {
+              return {
+                  caption: word,
+                  value: word,
+                  meta: "static"
+              };
+          }));
+  
+      }
+  }
+  editorInit.completers = [staticWordCompleter]
+  editorUpdate.completers = [staticWordCompleter]
+}
+
   $.notify.defaults({
     className: "success"
   });
@@ -22,6 +40,7 @@ window.onload = function (event) {
       switch (code) {
         case 83:
         case 87:
+          beatify()
           SaveNewCode()
           $.notify("saved", {
             autoHideDelay: 1000,
@@ -53,6 +72,7 @@ window.onload = function (event) {
   </div>
   </body>
   </html>`;
+
   document.getElementById("editorUpdate").style.display = "none"; //by default only one editor is shown 
   var editorInit = ace.edit("editorInit");
   editorInit.setTheme("ace/theme/monokai");
@@ -64,6 +84,7 @@ window.onload = function (event) {
     fontSize: "13pt",
     enableLiveAutocompletion: true
   });
+
   var editorUpdate = ace.edit("editorUpdate");
   editorUpdate.setTheme("ace/theme/monokai");
   editorUpdate.session.setMode("ace/mode/javascript");
@@ -74,18 +95,25 @@ window.onload = function (event) {
     fontSize: "13pt",
     enableLiveAutocompletion: true
   });
+
   ace.config.loadModule('ace/ext/language_tools')
+
+
   codeinit = localStorage.getItem("codeInit")
   codeupdate = localStorage.getItem("codeUpdate")
+
+
   editorInit.setValue(codeinit)
   editorUpdate.setValue(codeupdate)
 
   if (codeinit == undefined || codeinit == null) {
     function SaveNewCode() {
+      beatify()
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
   } else {
+    beatify()
     function SaveNewCode() {
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
