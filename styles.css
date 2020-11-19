@@ -5,17 +5,20 @@
     font-weight: 400;
     src: url(frameworks/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
   }
-  html{
+  html,body{
     overflow: hidden;
+    background-color: black;
   }
+
 #display{
   width: 100%;
   height: 100%;
   margin: 0%;
   padding: 0%;
   position: absolute;
-  border: 2px solid rgb(174, 233, 194);
-  background-color: white;
+  border: 0ch;
+  overflow: hidden;
+  background-color: rgb(27, 25, 25);
 }
 *{margin: 0%;}
 #editorInit { 
@@ -23,18 +26,21 @@
     right: 0;
     bottom: 0;
     left: 0;
-    height: 730px;
+    height: 780px;
+    overflow:scroll;
 }
 #editorUpdate{ 
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  height: 730px;
+  overflow: scroll;
+  height: 780px;
 }
 
 iframe{
   overflow: hidden;
+  border: 0ch;
   width: 100%;
   height: 100%;
 

@@ -16,12 +16,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
         integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
         crossorigin="anonymous"></script>
-    <script src="frameworks/two.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
+        integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg=="
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
         integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="
         crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.min.js" integrity="sha512-8qx1DL/2Wsrrij2TWX5UzvEaYOFVndR7BogdpOyF4ocMfnfkw28qt8ULkXD9Tef0bLvh3TpnSAljDC7uyniEuQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.min.js"
+        integrity="sha512-8qx1DL/2Wsrrij2TWX5UzvEaYOFVndR7BogdpOyF4ocMfnfkw28qt8ULkXD9Tef0bLvh3TpnSAljDC7uyniEuQ=="
+        crossorigin="anonymous"></script>
     <script src="index.js"></script>
     <script src="frameworks/materialize.min.js"></script>
 </head>
@@ -33,7 +37,7 @@
             <button id="sceneView" style="width:49%;font-size:large"
                 class="grey white-text darken-3 waves-white btn left waves-effect">SceneView <i
                     class="material-icons big">crop_landscape</i></button>
-            <button id="scriptView" style="width:47%;font-size:large" class="waves-effect btn grey left"><i
+            <button id="scriptView" style="width:47%;font-size:large" class="waves-effect darken-3 btn grey left"><i
                     class="large material-icons big">code</i> Script</button>
         </div>
         <div id="menus">
@@ -49,7 +53,8 @@
                 <div id="Export" class="modal">
                     <div class="modal-content">
                         <h4>Export Options</h4>
-                        <img style="width: 100px;height: auto;" class="img left img-responsive" src="images/html5.png" alt="Html5 Export">
+                        <img style="width: 100px;height: auto;" class="img left img-responsive" src="images/html5.png"
+                            alt="Html5 Export">
                         <button class="plain btn btn-plain black" id="build">HTML5 [Super-Fast-Build]</button>
                     </div>
                     <div class="modal-footer">
@@ -59,9 +64,9 @@
             </div>
             <div id="scenesMenu">
                 <div class="row grey lighten-2">
-                    <button style="width: 6%;" id="stop" class="btn right grey"><i
+                    <button style="width: 6%;" id="stop" class="btn right red"><i
                             class="material-icons">stop</i></button>
-                    <button style="width: 6%;" id="run" class="btn right grey"><i
+                    <button style="width: 6%;" id="run" class="btn right white grey-text"><i
                             class="material-icons">play_arrow</i></button>
                     <button style="width: 6%;" id="debug" class="btn right grey darken-2"><i
                             class="material-icons">play_circle_filled</i></button>
@@ -72,17 +77,17 @@
                     <label style="position: relative;z-index: 8;width: 4%;" id="colorPicker" class="btn red"><input
                             style="display: none;" type="color" /> <i style="font-size: large;"
                             class="large white-text material-icons">color_lens</i></label>
-                    <button id="appName" style="width: 6%;" class="btn waves-effect flow-text "><i></i></button>
+                    <button id="appName" style="width: 6%;" class="btn waves-effect flow-text "><i>data</i></button>
                 </div>
                 <div id="display">
                     <div class="debugger">
                     </div>
-                    <iframe id="iframe">
+                    <iframe sandbox="allow-scripts" sandbox="allow-top-navigation " cross-origin="true" sandbox="cross-origin" sandbox="allow-popups-to-escape-sandbox" sandbox="allow-popups" id="iframe">
                         Sorry Looks like u disabled javascript :/ if it is a stupid experiment dont do it please
                     </iframe>
                     <div style="position: absolute;margin-top: -8.6%;width: 100%;" class="row blue white-text"
                         id="downInfo">
-                        fps : X : Y :
+                        X : 0 Y : 0 ScreenX :0 ScreenY : 0
                     </div>
                 </div>
 
@@ -97,18 +102,26 @@
                         class="material-icons">settings_ethernet</i></div>
                 <div id="update" style="width: 50%;" class="btn waves-effect blue lighten-1">update.<i>js</i> <i
                         class="material-icons">settings_ethernet</i></div>
-                <div id="editorInit">// Make an instance of two and place it on the page.
-                    var two = new Two({
-                        fullscreen: true,
-                        autostart: true
-                      }).appendTo(document.body);
-                      var rect = two.makeRectangle(two.width / 2, two.height / 2, 50 ,50);
-                      rect.rotation += 0.001;
-                      //Now go to updats.js it runs the code forever
-                </div>
+<div id="editorInit">
+var game = new Phaser.Game(480, 320, Phaser.AUTO, null, {preload: preload, create: create});
+function preload(){
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.pageAlignHorizontally = true;
+    game.scale.pageAlignVertically = true;
+    game.stage.backgroundColor = '#eee';
+}
+
+function create(){
+    game.add.text(5, 5, 'FLOWERS ARE BLOOMING , BIRDS ARE SINGING, ITS A NEW BEGINING :>');
+    var emitter = game.add.emitter(game.world.centerX, game.world.centerY, 250);
+    game.add.image(0, 0, 'sky');
+}
+  
+</div>
                 <div id="editorUpdate">//Your code will be saved automatically and will be loaded if you click here :>
-                    rect.rotation += 0.001;
+
                 </div>
+                
             </div>
         </div>
 

@@ -3,10 +3,11 @@ window.onload = function (event) {
   function beatify() {
     var staticWordCompleter = {
       getCompletions: function (editor, session, pos, prefix, callback) {
-        var wordList = ["document", "var", "let", "Two", `var two = new Two({
-            fullscreen: true,
-            autostart: true
-          }).appendTo(document.body);`, "function main(){}", "Function","body","navigator","two.makeRectangle(two.width / 2, two.height / 2, 50 ,50);"];
+        var wordList = ["document",`const container = new PIXI.Container();`, 'app.screen.height',"app.screen.width","var", "let", "Phaser", `PIXI`, `const app = new PIXI.Application({
+          width:window.innerWidth, height: window.innerHeight, backgroundColor: 0x1099bb, resolution: window.devicePixelRatio || 1,
+      });
+      document.body.appendChild(app.view);`, `PIXI`, `app.stage.addChild(container);`,`const texture = PIXI.Texture.from('YourImage.png');
+      const bunny = new PIXI.Sprite(texture);`, 'Math', 'Math.random()', `group = this.add.group();`, "function main(){}", "Function", "body", "navigator", ''];
         callback(null, wordList.map(function (word) {
           return {
             caption: word,
@@ -25,9 +26,9 @@ window.onload = function (event) {
     className: "success"
   });
 
-  myIframeForDebug = document.getElementById("iframe").contentWindow
+  myIframeForDebug = document.getElementById("iframe").contentDocument
 
-  function updateDebugger() {
+  /////////||||         DEBUGGERR        ||||||\\\\\\\\\\\\\\
     window.onbeforeunload = function (e) {
       e.preventDefault();
       e.returnValue = 'Really want to quit the program?';
@@ -54,25 +55,21 @@ window.onload = function (event) {
           break;
       }
     };
-    myIframeForDebug.document.addEventListener("mousemove", function (ev) {
+    myIframeForDebug.body.addEventListener("mousemove", function (ev) {
       document.getElementById("downInfo").innerText = "X :" + ev.x + "\t    Y :" + ev.y + "\tScreenX:" + ev.screenX + "\tScreenY:" + ev.screenY
       ev.onerror = () => {
         alert("error")
       }
     })
-  }
-  setInterval(updateDebugger, 10)
   var iframe = document.getElementById("iframe")
   iframe.srcdoc = `<!DOCTYPE html>
   <html>
   <head>
   <title>Made With Gunzip Engine</title>
+
   </head>
   <body>
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
-  <div id='canvas'>
-  
-  </div>
   </body>
   </html>`;
 
@@ -134,9 +131,7 @@ window.onload = function (event) {
   document.getElementById("sceneView").onclick = () => {
     document.getElementById("scenesMenu").style.display = "block";
     document.getElementById("scriptingWindow").style.display = "none";
-    /*setTimeout(() => {
-      eval(editorInit.getValue() + editorUpdate.getValue())
-    }, 1000)*/
+
   }
   document.getElementById("scriptView").onclick = () => {
     document.getElementById("scenesMenu").style.display = "none";
@@ -153,6 +148,8 @@ window.onload = function (event) {
     document.getElementById("editorUpdate").style.display = "none";
 
   }
+
+  ////@@@@ very important RUNNING THE PROGRAM
   document.getElementById("run").onclick = () => {
     $("#debugger").hide()
     setTimeout(machet, 100);
@@ -166,16 +163,30 @@ window.onload = function (event) {
       iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.7.0/two.min.js" integrity="sha512-R/rIc7wP79QeUCTWfzz31otkUj5TS/gMeREfTiVQAus+DPXhpBsPYtz0MTnCIgC21S3gFKw9kopx0vNo/WTZTw==" crossorigin="anonymous"></script>
-      </head>
+      <style>
+      canvas{
+        width:100%;
+        height:100%;
+
+        overflow : hidden;
+      }
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      </style>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+       </head>
       <body>
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
-      <div id='canvas' style='position;absolute;width:100%;height:100%;'>
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
       </html>`;
     }, 1000)
   }
+
+  //@Important  DEBUGGIN MODE
   document.getElementById("debug").onclick = () => {
     setTimeout(machet, 100);
 
@@ -184,37 +195,94 @@ window.onload = function (event) {
       document.getElementById("iframe").contentWindow.focus();
     }
     $("#debugger").show()
+
+    //When First time loaded do this
     setTimeout(() => {
 
       iframe.srcdoc = `<html>
       <head>
+      <style>
+      canvas{
+        width:100%;
+        height:100%;
+        overflow:hiden;
+      }
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      </style>
       <title>Made With Gunzip Engine</title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.7.0/two.min.js" integrity="sha512-R/rIc7wP79QeUCTWfzz31otkUj5TS/gMeREfTiVQAus+DPXhpBsPYtz0MTnCIgC21S3gFKw9kopx0vNo/WTZTw==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
       </head>
       <body>
+
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
-      <div id='canvas' style='position;absolute;width:100%;height:100%;'>
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
       </html>`;
     }, 1000)
 
   }
+  // @Important Stop Stops the everything
   document.getElementById("stop").onclick = () => {
     $("#debugger").show()
     setTimeout(() => {
-      iframe.srcdoc = `<h1 align='center'>Stopped Process </h1><p align='center'>Game Exited and All threads closed.</p>`;
+      iframe.srcdoc = `<html>
+      <head>
+      <title>Made With Gunzip Engine</title>
+      <style>
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      canvas{
+        width:100%;
+        height:100%;
+        overflow:hiden;
+      }
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      </style>
+      </head>
+      <body>    <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+      
+      </body>
+      </html>`;
     }, 1)
   }
+  //@imporants It builds the program
   document.getElementById("build").onclick = () => {
     iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.7.0/two.min.js" integrity="sha512-R/rIc7wP79QeUCTWfzz31otkUj5TS/gMeREfTiVQAus+DPXhpBsPYtz0MTnCIgC21S3gFKw9kopx0vNo/WTZTw==" crossorigin="anonymous"></script>
+      <style>
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      canvas{
+        width:100%;
+        height:100%;
+        overflow:hiden;
+      }
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      </style>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
       </head>
       <body>
+
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
-      <div id='canvas' style='position;absolute;width:100%;height:100%;'>
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
       </html>`;
