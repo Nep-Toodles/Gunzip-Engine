@@ -1,22 +1,25 @@
 window.onload = function (event) {
-  
+
   function beatify() {
     var staticWordCompleter = {
-      getCompletions: function(editor, session, pos, prefix, callback) {
-          var wordList = ["document", "var", "let","PIXI","PIXI.application()","function main(){}","Function"];
-          callback(null, wordList.map(function(word) {
-              return {
-                  caption: word,
-                  value: word,
-                  meta: "static"
-              };
-          }));
-  
+      getCompletions: function (editor, session, pos, prefix, callback) {
+        var wordList = ["document", "var", "let", "Two", `var two = new Two({
+            fullscreen: true,
+            autostart: true
+          }).appendTo(document.body);`, "function main(){}", "Function","body","navigator","two.makeRectangle(two.width / 2, two.height / 2, 50 ,50);"];
+        callback(null, wordList.map(function (word) {
+          return {
+            caption: word,
+            value: word,
+            meta: "static"
+          };
+        }));
+
       }
+    }
+    editorInit.completers = [staticWordCompleter]
+    editorUpdate.completers = [staticWordCompleter]
   }
-  editorInit.completers = [staticWordCompleter]
-  editorUpdate.completers = [staticWordCompleter]
-}
 
   $.notify.defaults({
     className: "success"
@@ -114,6 +117,7 @@ window.onload = function (event) {
     }
   } else {
     beatify()
+
     function SaveNewCode() {
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
@@ -162,7 +166,7 @@ window.onload = function (event) {
       iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.4.5/pixi.min.js" integrity="sha512-P8gDaMAlo6/WKF67KsF0VdiwGZygvnWi55J42E8mLgD8FGgJRw6wCaC/QlRAH3BlRodzF362lde42KkqoEBeyg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.7.0/two.min.js" integrity="sha512-R/rIc7wP79QeUCTWfzz31otkUj5TS/gMeREfTiVQAus+DPXhpBsPYtz0MTnCIgC21S3gFKw9kopx0vNo/WTZTw==" crossorigin="anonymous"></script>
       </head>
       <body>
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
@@ -185,7 +189,7 @@ window.onload = function (event) {
       iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.4.5/pixi.min.js" integrity="sha512-P8gDaMAlo6/WKF67KsF0VdiwGZygvnWi55J42E8mLgD8FGgJRw6wCaC/QlRAH3BlRodzF362lde42KkqoEBeyg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.7.0/two.min.js" integrity="sha512-R/rIc7wP79QeUCTWfzz31otkUj5TS/gMeREfTiVQAus+DPXhpBsPYtz0MTnCIgC21S3gFKw9kopx0vNo/WTZTw==" crossorigin="anonymous"></script>
       </head>
       <body>
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
@@ -206,7 +210,7 @@ window.onload = function (event) {
     iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.4.5/pixi.min.js" integrity="sha512-P8gDaMAlo6/WKF67KsF0VdiwGZygvnWi55J42E8mLgD8FGgJRw6wCaC/QlRAH3BlRodzF362lde42KkqoEBeyg==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/two.js/0.7.0/two.min.js" integrity="sha512-R/rIc7wP79QeUCTWfzz31otkUj5TS/gMeREfTiVQAus+DPXhpBsPYtz0MTnCIgC21S3gFKw9kopx0vNo/WTZTw==" crossorigin="anonymous"></script>
       </head>
       <body>
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>

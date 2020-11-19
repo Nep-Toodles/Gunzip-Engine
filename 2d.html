@@ -16,7 +16,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
         integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
         crossorigin="anonymous"></script>
-    <script src="frameworks/crafty.js"></script>
+    <script src="frameworks/two.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
         integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="
@@ -97,25 +97,17 @@
                         class="material-icons">settings_ethernet</i></div>
                 <div id="update" style="width: 50%;" class="btn waves-effect blue lighten-1">update.<i>js</i> <i
                         class="material-icons">settings_ethernet</i></div>
-                <div id="editorInit">//Your code will be saved automatically and will be loaded if you click here :>
-
-                    window.onload = function(){
-                    Crafty.init(window.innerWidth,window.innerHeight,document.getElementById("canvas")) //The Default
-                    canvas
-                    Crafty.e('Floor, 2D, Canvas, Color') //the 2D Canvas and Color are default the floor is just a note
-                    .attr({x: 0, y: 250, w: 250, h: 10})
-                    .color('green');
-
-                    Crafty.e('2D, Canvas, Color, Twoway, Gravity') // Gravity adds gravity to player and twoway means it
-                    is a platform character and can move and jump
-                    .attr({x: 0, y: 0, w: 50, h: 50})
-                    .color('#F00')
-                    .twoway(200)
-                    .gravity('Floor'); //It will ONLY stop when any Object have the note 'floor'
-                    } // Warning dont put a semicolon here
-                    //Here you go you made a game
+                <div id="editorInit">// Make an instance of two and place it on the page.
+                    var two = new Two({
+                        fullscreen: true,
+                        autostart: true
+                      }).appendTo(document.body);
+                      var rect = two.makeRectangle(two.width / 2, two.height / 2, 50 ,50);
+                      rect.rotation += 0.001;
+                      //Now go to updats.js it runs the code forever
                 </div>
                 <div id="editorUpdate">//Your code will be saved automatically and will be loaded if you click here :>
+                    rect.rotation += 0.001;
                 </div>
             </div>
         </div>
