@@ -32,13 +32,15 @@
 
 <body>
     <div class="grey lighten-1" id="overlay">
-        <div class="panel blue lighten-1">
+        <div class="panel row grey lighten-1">
             <a href="index.html" class="btn left grey darken-1"><i class="material-icons">fast_rewind</i></a>
-            <button id="sceneView" style="width:49%;font-size:large"
-                class="grey white-text darken-3 waves-white btn left waves-effect">SceneView <i
+            <button id="sceneView" style="width:36%;font-size:large"
+                class="white black-text darken-3 waves-white btn left waves-effect">SceneView <i
                     class="material-icons big">crop_landscape</i></button>
-            <button id="scriptView" style="width:47%;font-size:large" class="waves-effect darken-3 btn grey left"><i
+            <button id="scriptView" style="width:30%;font-size:large" class="waves-effect darken-3 btn grey left"><i
                     class="large material-icons big">code</i> Script</button>
+            <button id="imageView" style="width:30%;font-size:large" class="waves-effect darken-3 btn yellow left"><i
+                        class="large material-icons big">image</i> Imaged</button>
         </div>
         <div id="menus">
             <div id="popup-menu">
@@ -62,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div id="scenesMenu">
+            <div  id="scenesMenu">
                 <div class="row grey lighten-2">
                     <button style="width: 6%;" id="stop" class="btn right red"><i
                             class="material-icons">stop</i></button>
@@ -82,7 +84,7 @@
                 <div id="display">
                     <div class="debugger">
                     </div>
-                    <iframe sandbox="allow-scripts" sandbox="allow-top-navigation " cross-origin="true" sandbox="cross-origin" sandbox="allow-popups-to-escape-sandbox" sandbox="allow-popups" id="iframe">
+                    <iframe id="iframe">
                         Sorry Looks like u disabled javascript :/ if it is a stupid experiment dont do it please
                     </iframe>
                     <div style="position: absolute;margin-top: -8.6%;width: 100%;" class="row blue white-text"
@@ -91,6 +93,21 @@
                     </div>
                 </div>
 
+            </div>
+            <!--IMAGED WINDOW-->
+            <div style="display:none;" id="imageMenu">
+                <div class="blue" style="width:100%;height:400px;">
+                    <label>
+                    <input id="imagedFile" style='display: none;width: 100%;height: 100%;' onchange="encodeImageFileAsURL(this)" type="file"/>
+                    
+                    <i style="font-size: 150px;padding-left:590px ;padding-top: 120px;" class="material-icons center-align">
+                        add_to_photos  
+                    </i>
+                   </label>
+                </div>
+                <textarea name="" id="ImageCode" cols="30" style="height: 192px;">
+                    Put Your Image up there or drag it here to convert it to actual image and DONT USE LINKS like https://google.com/image.png if you do so then download it and upload it above or it will show errors.
+                </textarea>
             </div>
             <div>
 

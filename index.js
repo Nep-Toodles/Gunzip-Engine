@@ -1,5 +1,15 @@
-window.onload = function (event) {
-
+//Read Image a url
+  function encodeImageFileAsURL(element) {
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      document.getElementById("ImageCode").value = reader.result
+    }
+    reader.readAsDataURL(file);
+  }
+  window.onload = function (event) {
+  
+  //Saving
   function beatify() {
     var staticWordCompleter = {
       getCompletions: function (editor, session, pos, prefix, callback) {
@@ -21,14 +31,16 @@ window.onload = function (event) {
     editorInit.completers = [staticWordCompleter]
     editorUpdate.completers = [staticWordCompleter]
   }
-
+  
+  
+  //Notification SAVE
   $.notify.defaults({
     className: "success"
   });
 
-  myIframeForDebug = document.getElementById("iframe").contentDocument
+  myIframeForDebug = document.getElementById("iframe").contentWindow
 
-  /////////||||         DEBUGGERR        ||||||\\\\\\\\\\\\\\
+  function updateDebugger() {
     window.onbeforeunload = function (e) {
       e.preventDefault();
       e.returnValue = 'Really want to quit the program?';
@@ -38,7 +50,6 @@ window.onload = function (event) {
       e = e || window.event;
 
       if (!e.ctrlKey) return;
-
       var code = e.which || e.keyCode;
 
       switch (code) {
@@ -55,12 +66,14 @@ window.onload = function (event) {
           break;
       }
     };
-    myIframeForDebug.body.addEventListener("mousemove", function (ev) {
+    myIframeForDebug.document.addEventListener("mousemove", function (ev) {
       document.getElementById("downInfo").innerText = "X :" + ev.x + "\t    Y :" + ev.y + "\tScreenX:" + ev.screenX + "\tScreenY:" + ev.screenY
       ev.onerror = () => {
         alert("error")
       }
     })
+  }
+  setInterval(updateDebugger, 10)
   var iframe = document.getElementById("iframe")
   iframe.srcdoc = `<!DOCTYPE html>
   <html>
@@ -80,6 +93,7 @@ window.onload = function (event) {
   editorInit.setOptions({
     enableLiveAutocompletion: true,
     enableBasicAutocompletion: true,
+    autoScrollEditorIntoView: true,
     enableSnippets: true,
     fontSize: "13pt",
     enableLiveAutocompletion: true
@@ -93,6 +107,7 @@ window.onload = function (event) {
     enableBasicAutocompletion: true,
     enableSnippets: true,
     fontSize: "13pt",
+    autoScrollEditorIntoView: true,
     enableLiveAutocompletion: true
   });
 
@@ -128,22 +143,42 @@ window.onload = function (event) {
   document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
 
   //Events of Tab Window Start
+  document.getElementById("imageView").onclick = () => {
+    document.getElementById("scriptView").style.width = "26%"
+    document.getElementById("sceneView").style.width = "24%"
+    document.getElementById("imageView").style.width = "46%"
+    document.getElementById("imageMenu").style.display = "block";
+    document.getElementById("scenesMenu").style.display = "none";
+    document.getElementById("scriptingWindow").style.display = "none";
+  }
   document.getElementById("sceneView").onclick = () => {
+    document.getElementById("scriptView").style.width = "26%"
+    document.getElementById("sceneView").style.width = "46%"
+    document.getElementById("imageView").style.width = "24%"
+    document.getElementById("imageMenu").style.display = "none";
     document.getElementById("scenesMenu").style.display = "block";
     document.getElementById("scriptingWindow").style.display = "none";
 
   }
   document.getElementById("scriptView").onclick = () => {
+    document.getElementById("scriptView").style.width = "46%"
+    document.getElementById("sceneView").style.width = "24%"
+    document.getElementById("imageView").style.width = "26%"
+    document.getElementById("imageMenu").style.display = "none";
     document.getElementById("scenesMenu").style.display = "none";
     document.getElementById("scriptingWindow").style.display = "block";
 
   }
   document.getElementById("update").onclick = () => {
+    document.getElementById("update").style.color = "black";
+    document.getElementById("init").style.color = "white";
     document.getElementById("editorInit").style.display = "none";
     document.getElementById("editorUpdate").style.display = "block";
 
   }
   document.getElementById("init").onclick = () => {
+    document.getElementById("update").style.color = "white";
+    document.getElementById("init").style.color = "black";
     document.getElementById("editorInit").style.display = "block";
     document.getElementById("editorUpdate").style.display = "none";
 
@@ -180,7 +215,8 @@ window.onload = function (event) {
        </head>
       <body>
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
-      
+      <img style="display:none" id="imageid" src="">
+      <canvas style="display:none" id="imgCanvas" />
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
       </html>`;
     }, 1000)
@@ -227,6 +263,7 @@ window.onload = function (event) {
   }
   // @Important Stop Stops the everything
   document.getElementById("stop").onclick = () => {
+    console.clear()
     $("#debugger").show()
     setTimeout(() => {
       iframe.srcdoc = `<html>
