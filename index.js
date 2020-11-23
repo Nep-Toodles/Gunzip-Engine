@@ -3,7 +3,7 @@
     var file = element.files[0];
     var reader = new FileReader();
     reader.onloadend = function() {
-      document.getElementById("ImageCode").value = reader.result
+      document.getElementById("ImageCode").innerText = reader.result
     }
     reader.readAsDataURL(file);
   }
@@ -121,11 +121,14 @@
   editorInit.setValue(codeinit)
   editorUpdate.setValue(codeupdate)
 
-  if (codeinit == undefined || codeinit == null) {
+  if (codeinit == undefined || codeinit == null ) {
+
     function SaveNewCode() {
       beatify()
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
+      editorInit.setValue(codeinit)
+      editorUpdate.setValue(codeupdate)
     }
   } else {
     beatify()
@@ -139,7 +142,9 @@
     editorUpdate.setValue(codeupdate)
 
   }
-
+  editorInit.setValue(codeinit)
+  editorUpdate.setValue(codeupdate)
+  
   document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
 
   //Events of Tab Window Start
