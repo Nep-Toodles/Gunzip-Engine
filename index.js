@@ -16,7 +16,7 @@
         var wordList = ["document",`const container = new PIXI.Container();`, 'app.screen.height',"app.screen.width","var", "let", "Phaser", `PIXI`, `const app = new PIXI.Application({
           width:window.innerWidth, height: window.innerHeight, backgroundColor: 0x1099bb, resolution: window.devicePixelRatio || 1,
       });
-      document.body.appendChild(app.view);`, `PIXI`, `app.stage.addChild(container);`,`const texture = PIXI.Texture.from('YourImage.png');
+      document.body.appendChild(app.view);`, `PIXI`, `app.stage.addChild(container);`, `container.addChild(container);`,`const texture = PIXI.Texture.from('YourImage.png');
       const bunny = new PIXI.Sprite(texture);`, 'Math', 'Math.random()', `group = this.add.group();`, "function main(){}", "Function", "body", "navigator", ''];
         callback(null, wordList.map(function (word) {
           return {
@@ -86,7 +86,7 @@
   </body>
   </html>`;
 
-  document.getElementById("editorUpdate").style.display = "none"; //by default only one editor is shown 
+  document.getElementById("editorUpdateContainer").style.display = "none"; //by default only one editor is shown 
   var editorInit = ace.edit("editorInit");
   editorInit.setTheme("ace/theme/monokai");
   editorInit.session.setMode("ace/mode/typescript");
@@ -161,6 +161,7 @@
 
   }
   document.getElementById("scriptView").onclick = () => {
+    editorInit.resize()
     document.getElementById("scriptView").style.width = "46%"
     document.getElementById("sceneView").style.width = "24%"
     document.getElementById("imageView").style.width = "26%"
@@ -170,17 +171,15 @@
 
   }
   document.getElementById("update").onclick = () => {
-    document.getElementById("update").style.color = "black";
-    document.getElementById("init").style.color = "white";
-    document.getElementById("editorInit").style.display = "none";
-    document.getElementById("editorUpdate").style.display = "block";
+    editorUpdate.focus()
+    document.getElementById("editorInitContainer").style.display = "none";
+    document.getElementById("editorUpdateContainer").style.display = "block";
 
   }
   document.getElementById("init").onclick = () => {
-    document.getElementById("update").style.color = "white";
-    document.getElementById("init").style.color = "black";
-    document.getElementById("editorInit").style.display = "block";
-    document.getElementById("editorUpdate").style.display = "none";
+    editorInit.focus()
+    document.getElementById("editorInitContainer").style.display = "block";
+    document.getElementById("editorUpdateContainer").style.display = "none";
 
   }
 
@@ -211,6 +210,7 @@
         margin:0px;
       }
       </style>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
        </head>
       <body>
@@ -251,6 +251,7 @@
       </style>
       <title>Made With Gunzip Engine</title>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
       </head>
       <body>
 
@@ -315,6 +316,7 @@
         margin:0px;
       }
       </style>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
       </head>
       <body>

@@ -32,7 +32,7 @@
 
 <body>
     <div class="grey lighten-1" id="overlay">
-        <div class="panel row grey lighten-1">
+        <div id="header" class="panel row grey lighten-1">
             <a href="index.html" class="btn left grey darken-1"><i class="material-icons">fast_rewind</i></a>
             <button id="sceneView" style="width:36%;font-size:large"
                 class="white black-text darken-3 waves-white btn left waves-effect">SceneView <i
@@ -64,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            <div  id="scenesMenu">
+            <di  id="scenesMenu">
                 <div class="row grey lighten-2">
                     <button style="width: 6%;" id="stop" class="btn right red"><i
                             class="material-icons">stop</i></button>
@@ -79,23 +79,22 @@
                     <label style="position: relative;z-index: 8;width: 4%;" id="colorPicker" class="btn red"><input
                             style="display: none;" type="color" /> <i style="font-size: large;"
                             class="large white-text material-icons">color_lens</i></label>
-                    <button id="appName" style="width: 6%;" class="btn waves-effect flow-text "><i>data</i></button>
                 </div>
-                <div id="display">
+                <div style="overflow: hidden;" id="display">
                     <div class="debugger">
                     </div>
-                    <iframe id="iframe">
+                    <iframe style="overflow: hidden;" id="iframe">
                         Sorry Looks like u disabled javascript :/ if it is a stupid experiment dont do it please
                     </iframe>
-                    <div style="position: absolute;margin-top: -8.6%;width: 100%;" class="row blue white-text"
+                    <div style="position:absolute;width: 100%;margin-top: 59px;" class="blue white-text"
                         id="downInfo">
                         X : 0 Y : 0 ScreenX :0 ScreenY : 0
                     </div>
                 </div>
 
-            </div>
+            </di>
             <!--IMAGED WINDOW-->
-            <div style="display:none;" id="imageMenu">
+            <div style="display:none;overflow: hidden;" id="imageMenu">
                 <div class="blue" style="width:100%;height:400px;">
                     <label>
                     <input id="imagedFile" style='display: none;width: 100%;height: 100%;' onchange="encodeImageFileAsURL(this)" type="file"/>
@@ -105,40 +104,34 @@
                     </i>
                    </label>
                 </div>
-                <textarea name="" id="ImageCode" cols="30" style="height: 192px;">
+                <button onclick="document.execCommand('copy')" style="width: 100%;">Copy</button>
+                <div id="ImageCode" style="height: 190px;overflow: scroll;">
                     Put Your Image up there or drag it here to convert it to actual image and DONT USE LINKS like https://google.com/image.png if you do so then download it and upload it above or it will show errors.
-                </textarea>
+                </div>
             </div>
             <div>
 
             </div>
         </div>
-        <div id="scriptingWindow">
-            <div id="files" style="width: auto;height: 100%;" class="pannel blue lighten-3 row">
-                <div id="init" style="width: 49%;" class="btn waves-effect huge blue lighten-1">init.<i>js</i> <i
-                        class="material-icons">settings_ethernet</i></div>
-                <div id="update" style="width: 50%;" class="btn waves-effect blue lighten-1">update.<i>js</i> <i
-                        class="material-icons">settings_ethernet</i></div>
-<div id="editorInit">
-var game = new Phaser.Game(480, 320, Phaser.AUTO, null, {preload: preload, create: create});
-function preload(){
-    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    game.scale.pageAlignHorizontally = true;
-    game.scale.pageAlignVertically = true;
-    game.stage.backgroundColor = '#eee';
-}
+        
+        <div style="height: 50%;" id="scriptingWindow">
 
-function create(){
-    game.add.text(5, 5, 'FLOWERS ARE BLOOMING , BIRDS ARE SINGING, ITS A NEW BEGINING :>');
-    var emitter = game.add.emitter(game.world.centerX, game.world.centerY, 250);
-    game.add.image(0, 0, 'sky');
-}
-  
+            
+            <div id="files" style="width: auto;height: 100%;" class="pannel blue lighten-3 row">
+                <div id="init" style="width: 49%;" class="btn waves-effect huge white pink-text lighten-1">init.<i>js</i> <i
+                        class="material-icons">settings_ethernet</i></div>
+                <div id="update" style="width: 50%;"  class="tooltipped btn waves-effect white pink-text lighten-1" data-position="top" data-tooltip="Update.js file">update.<i>js</i> <i
+                        class="material-icons">settings_ethernet</i></div>
+<div id="editorInitContainer">
+                        <div id="editorInit">
+
+  </div>
 </div>
+<div id="editorUpdateContainer">
                 <div id="editorUpdate">//Your code will be saved automatically and will be loaded if you click here :>
 
                 </div>
-                
+                </div>
             </div>
         </div>
 
