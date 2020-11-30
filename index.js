@@ -106,10 +106,8 @@ window.onload = function (event) {
   });
 
   ace.config.loadModule('ace/ext/language_tools')
- codeinit = localStorage.getItem("codeInit")
-  codeupdate = localStorage.getItem("codeUpdate")
 
-  if ( codeinit == undefined ||  codeinit == null) {
+  if (typeof localStorage.getItem("codeUpdate") == undefined || typeof localStorage.getItem("codeUpdate") == null) {
 
     function SaveNewCode() {
       beatify()
@@ -118,12 +116,10 @@ window.onload = function (event) {
       localStorage.setItem("codeHtml", editorHtml.getValue())
       codehtml = localStorage.getItem("codeHtml")
       codeinit = localStorage.getItem("codeInit")
-      codeupdate = localStorage.getItem("codeUpdate")
-    }
-    editorInit.setValue(codeinit)
-      editorHtml.setValue(codehtml)
-      editorUpdate.setValue(codeupdate)
-  } else {
+      
+
+  } 
+}else {
     beatify()
 
     function SaveNewCode() {
@@ -132,9 +128,9 @@ window.onload = function (event) {
       localStorage.setItem("codeUpdate",editorUpdate.getValue() )
     }
 
-    editorInit.setValue(codeinit)
-    editorHtml.setValue(codehtml)
-    editorUpdate.setValue(codeupdate)
+    editorInit.setValue(localStorage.getItem("codeInit"))
+    editorHtml.setValue(localStorage.getItem("codeHtml"))
+    editorUpdate.setValue(localStorage.getItem("codeUpdate"))
 
   }
 
@@ -352,3 +348,4 @@ window.onload = function (event) {
   setInterval(SaveNewCode, 1000)
   //console.clear()
 }
+
