@@ -107,11 +107,6 @@ window.onload = function (event) {
 
   ace.config.loadModule('ace/ext/language_tools')
 
-  codehtml = localStorage.getItem("codeHtml")
-  codeinit = localStorage.getItem("codeInit")
-  codeupdate = localStorage.getItem("codeUpdate")
-
-
   if ( codeinit == undefined ||  codeinit == null) {
 
     function SaveNewCode() {
@@ -119,7 +114,9 @@ window.onload = function (event) {
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
       localStorage.setItem("codeHtml", editorHtml.getValue())
-      
+      codehtml = localStorage.getItem("codeHtml")
+      codeinit = localStorage.getItem("codeInit")
+      codeupdate = localStorage.getItem("codeUpdate")
     }
     editorInit.setValue(codeinit)
       editorHtml.setValue(codehtml)
