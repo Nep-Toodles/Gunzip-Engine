@@ -106,6 +106,8 @@ window.onload = function (event) {
   });
 
   ace.config.loadModule('ace/ext/language_tools')
+ codeinit = localStorage.getItem("codeInit")
+  codeupdate = localStorage.getItem("codeUpdate")
 
   if ( codeinit == undefined ||  codeinit == null) {
 
