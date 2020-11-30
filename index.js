@@ -1,38 +1,21 @@
 //Read Image a url
-  function encodeImageFileAsURL(element) {
-    var file = element.files[0];
-    var reader = new FileReader();
-    reader.onloadend = function() {
-      document.getElementById("ImageCode").innerText = reader.result
-    }
-    reader.readAsDataURL(file);
+function encodeImageFileAsURL(element) {
+  var file = element.files[0];
+  var reader = new FileReader();
+  reader.onloadend = function () {
+    document.getElementById("ImageCode").innerText = reader.result
   }
-  window.onload = function (event) {
+  reader.readAsDataURL(file);
+}
+window.onbeforeunload = ()=> location.reload()
+window.onload = function (event) {
   
   //Saving
   function beatify() {
-    var staticWordCompleter = {
-      getCompletions: function (editor, session, pos, prefix, callback) {
-        var wordList = ["document",`const container = new PIXI.Container();`, 'app.screen.height',"app.screen.width","var", "let", "Phaser", `PIXI`, `const app = new PIXI.Application({
-          width:window.innerWidth, height: window.innerHeight, backgroundColor: 0x1099bb, resolution: window.devicePixelRatio || 1,
-      });
-      document.body.appendChild(app.view);`, `PIXI`, `app.stage.addChild(container);`, `container.addChild(container);`,`const texture = PIXI.Texture.from('YourImage.png');
-      const bunny = new PIXI.Sprite(texture);`, 'Math', 'Math.random()', `group = this.add.group();`, "function main(){}", "Function", "body", "navigator", ''];
-        callback(null, wordList.map(function (word) {
-          return {
-            caption: word,
-            value: word,
-            meta: "static"
-          };
-        }));
-
-      }
-    }
-    editorInit.completers = [staticWordCompleter]
-    editorUpdate.completers = [staticWordCompleter]
+    
   }
-  
-  
+
+
   //Notification SAVE
   $.notify.defaults({
     className: "success"
@@ -85,11 +68,21 @@
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
   </body>
   </html>`;
-
+  var editorHtml = ace.edit("editorHtml");
   document.getElementById("editorUpdateContainer").style.display = "none"; //by default only one editor is shown 
   var editorInit = ace.edit("editorInit");
+  editorHtml.setTheme("ace/theme/monokai");
   editorInit.setTheme("ace/theme/monokai");
-  editorInit.session.setMode("ace/mode/typescript");
+  editorInit.session.setMode("ace/mode/javascript");
+  editorHtml.session.setMode("ace/mode/html");
+  editorHtml.setOptions({
+    enableLiveAutocompletion: true,
+    enableBasicAutocompletion: true,
+    autoScrollEditorIntoView: true,
+    enableSnippets: true,
+    fontSize: "13pt",
+    enableLiveAutocompletion: true
+  });
   editorInit.setOptions({
     enableLiveAutocompletion: true,
     enableBasicAutocompletion: true,
@@ -100,6 +93,7 @@
   });
 
   var editorUpdate = ace.edit("editorUpdate");
+  document.getElementById("editorHtmlContainer").style.display = "none";
   editorUpdate.setTheme("ace/theme/monokai");
   editorUpdate.session.setMode("ace/mode/javascript");
   editorUpdate.setOptions({
@@ -113,40 +107,39 @@
 
   ace.config.loadModule('ace/ext/language_tools')
 
-
+  codehtml = localStorage.getItem("codeHtml")
   codeinit = localStorage.getItem("codeInit")
   codeupdate = localStorage.getItem("codeUpdate")
 
 
-  editorInit.setValue(codeinit)
-  editorUpdate.setValue(codeupdate)
-
-  if (codeinit == undefined || codeinit == null ) {
+  if ( codeinit == undefined ||  codeinit == null) {
 
     function SaveNewCode() {
       beatify()
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
-      editorInit.setValue(codeinit)
-      editorUpdate.setValue(codeupdate)
+      localStorage.setItem("codeHtml", editorHtml.getValue())
+      
     }
+    editorInit.setValue(codeinit)
+      editorHtml.setValue(codehtml)
+      editorUpdate.setValue(codeupdate)
   } else {
     beatify()
 
     function SaveNewCode() {
+      localStorage.setItem("codeHtml",editorHtml.getValue() )
       localStorage.setItem("codeInit", editorInit.getValue())
-      localStorage.setItem("codeUpdate", editorUpdate.getValue())
+      localStorage.setItem("codeUpdate",editorUpdate.getValue() )
     }
 
     editorInit.setValue(codeinit)
+    editorHtml.setValue(codehtml)
     editorUpdate.setValue(codeupdate)
 
   }
-  editorInit.setValue(codeinit)
-  editorUpdate.setValue(codeupdate)
-  
-  document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
 
+  document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
   //Events of Tab Window Start
   document.getElementById("imageView").onclick = () => {
     document.getElementById("scriptView").style.width = "26%"
@@ -167,6 +160,8 @@
   }
   document.getElementById("scriptView").onclick = () => {
     editorInit.resize()
+    editorUpdate.resize()
+    editorHtml.resize()
     document.getElementById("scriptView").style.width = "46%"
     document.getElementById("sceneView").style.width = "24%"
     document.getElementById("imageView").style.width = "26%"
@@ -175,14 +170,23 @@
     document.getElementById("scriptingWindow").style.display = "block";
 
   }
+  document.getElementById("html").onclick = () => {
+    editorHtml.focus()
+    document.getElementById("editorHtmlContainer").style.display = "block";
+    document.getElementById("editorInitContainer").style.display = "none";
+    document.getElementById("editorUpdateContainer").style.display = "none";
+
+  }
   document.getElementById("update").onclick = () => {
     editorUpdate.focus()
+    document.getElementById("editorHtmlContainer").style.display = "none";
     document.getElementById("editorInitContainer").style.display = "none";
     document.getElementById("editorUpdateContainer").style.display = "block";
 
   }
   document.getElementById("init").onclick = () => {
     editorInit.focus()
+    document.getElementById("editorHtmlContainer").style.display = "none";
     document.getElementById("editorInitContainer").style.display = "block";
     document.getElementById("editorUpdateContainer").style.display = "none";
 
@@ -215,10 +219,12 @@
         margin:0px;
       }
       </style>
+      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
        </head>
       <body>
+      `+editorHtml.getValue()+`
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       <img style="display:none" id="imageid" src="">
       <canvas style="display:none" id="imgCanvas" />
@@ -255,11 +261,12 @@
       }
       </style>
       <title>Made With Gunzip Engine</title>
+      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
       </head>
       <body>
-
+      `+editorHtml.getValue()+`
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
@@ -321,11 +328,12 @@
         margin:0px;
       }
       </style>
+      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
       </head>
       <body>
-
+      `+editorHtml.getValue()+`
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
@@ -338,7 +346,7 @@
     if (name != undefined || name != null) {
       saveAs(blob, name + ".gunz.html")
     } else {
-      alert("From Now on enter a vaild name")
+      alert("Please enter a vaild name")
     }
   }
   //Events of Tab windows End
