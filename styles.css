@@ -1,5 +1,4 @@
-
-@font-face {
+ont-face {
     font-family: 'Material Icons';
     font-style: normal;
     font-weight: 400;
@@ -37,6 +36,19 @@
 #editorUpdateContainer{
   height:200px;
   width:100%;
+}
+#editorHtmlContainer{
+  height:200px;
+  width:100%;
+}
+#editorHtml{ 
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  position: relative;
+  height: 600px;
 }
 #editorInit { 
     top: 0;
