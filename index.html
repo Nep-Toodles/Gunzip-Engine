@@ -12,19 +12,7 @@
 
 <body class="waves-effect blue darken-3 waves-block waves-circle waves-blue" style="width: 100%;height: auto;">
 
-  <div id="engine" class="modal">
-    <div class="modal-content">
-      <h4>Select Your Engine</h4>
-      <a href="2d.html">2D</a>
-      <a href="3d.html">3D</a>
-    </div>
-    <div class="modal-footer">
-      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
-    </div>
-  </div>
-
-          
-    <header class="blue row">
+<header class="blue row">
         <div style="margin: 0%;width: 100%;" class="flow-text center centar-align blue lighten-3 green-text  card-header ">
             Gunzip Engine
         </div>
@@ -45,10 +33,7 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('.modal');
-    var instances = M.Modal.init(elems);
-  });
+        
         function readSingleFile(e) {
             var file = e.target.files[0];
             if (!file) {
