@@ -7,12 +7,12 @@ function encodeImageFileAsURL(element) {
   }
   reader.readAsDataURL(file);
 }
-window.onbeforeunload = ()=> location.reload()
+window.onbeforeunload = () => location.reload()
 window.onload = function (event) {
-  
+
   //Saving
   function beatify() {
-    
+
   }
 
 
@@ -107,30 +107,28 @@ window.onload = function (event) {
 
   ace.config.loadModule('ace/ext/language_tools')
 
-  if (typeof localStorage.getItem("codeUpdate") == undefined || typeof localStorage.getItem("codeUpdate") == null) {
+  if (typeof localStorage.getItem("codeHtml") == undefined || typeof localStorage.getItem("codeHtml") == null) {
 
     function SaveNewCode() {
       beatify()
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
       localStorage.setItem("codeHtml", editorHtml.getValue())
-      codehtml = localStorage.getItem("codeHtml")
-      codeinit = localStorage.getItem("codeInit")
-      
 
-  } 
-}else {
+
+    }
+  } else {
     beatify()
 
     function SaveNewCode() {
-      localStorage.setItem("codeHtml",editorHtml.getValue() )
+      localStorage.setItem("codeHtml", editorHtml.getValue())
       localStorage.setItem("codeInit", editorInit.getValue())
-      localStorage.setItem("codeUpdate",editorUpdate.getValue() )
+      localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
+     editorInit.setValue(localStorage.getItem("codeInit"))
+    editorUpdate.setValue(localStorage.getItem("codeUpdate"))
+    editorHtml.setValue(localStorage.getItem("codeHtml"))
 
-    editorInit.session.setValue(localStorage.getItem("codeInit"))
-    editorHtml.session.setValue(localStorage.getItem("codeHtml"))
-    editorUpdate.session.setValue(localStorage.getItem("codeUpdate"))
 
   }
 
@@ -154,9 +152,12 @@ window.onload = function (event) {
 
   }
   document.getElementById("scriptView").onclick = () => {
+    
+    editorInit.setValue(localStorage.getItem("codeInit"))
     editorInit.resize()
     editorUpdate.resize()
     editorHtml.resize()
+    editorInit.moveCursorTo(0,0);
     document.getElementById("scriptView").style.width = "46%"
     document.getElementById("sceneView").style.width = "24%"
     document.getElementById("imageView").style.width = "26%"
@@ -166,21 +167,27 @@ window.onload = function (event) {
 
   }
   document.getElementById("html").onclick = () => {
+    editorHtml.setValue(localStorage.getItem("codeHtml"))
     editorHtml.focus()
+    editorHtml.moveCursorTo(0,0);
     document.getElementById("editorHtmlContainer").style.display = "block";
     document.getElementById("editorInitContainer").style.display = "none";
     document.getElementById("editorUpdateContainer").style.display = "none";
 
   }
   document.getElementById("update").onclick = () => {
+    editorUpdate.setValue(localStorage.getItem("codeUpdate"))
     editorUpdate.focus()
+    editorUpdate.moveCursorTo(0,0);
     document.getElementById("editorHtmlContainer").style.display = "none";
     document.getElementById("editorInitContainer").style.display = "none";
     document.getElementById("editorUpdateContainer").style.display = "block";
 
   }
   document.getElementById("init").onclick = () => {
+    editorInit.setValue(localStorage.getItem("codeInit"))
     editorInit.focus()
+    editorInit.moveCursorTo(0,0);
     document.getElementById("editorHtmlContainer").style.display = "none";
     document.getElementById("editorInitContainer").style.display = "block";
     document.getElementById("editorUpdateContainer").style.display = "none";
@@ -219,7 +226,7 @@ window.onload = function (event) {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
        </head>
       <body>
-      `+editorHtml.getValue()+`
+      `+ editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       <img style="display:none" id="imageid" src="">
       <canvas style="display:none" id="imgCanvas" />
@@ -261,7 +268,7 @@ window.onload = function (event) {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
       </head>
       <body>
-      `+editorHtml.getValue()+`
+      `+ editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
@@ -328,7 +335,7 @@ window.onload = function (event) {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
       </head>
       <body>
-      `+editorHtml.getValue()+`
+      `+ editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
