@@ -131,7 +131,7 @@ window.onload = function (event) {
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
-
+  editorHtml.resize()
     editorInit.setValue(codeinit)
     editorHtml.setValue(localStorage.getItem("codeHtml"))
     editorUpdate.setValue(codeupdate)
