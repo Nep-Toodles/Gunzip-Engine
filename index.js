@@ -128,9 +128,9 @@ window.onload = function (event) {
       localStorage.setItem("codeUpdate",editorUpdate.getValue() )
     }
 
-    editorInit.setValue(localStorage.getItem("codeInit"))
-    editorHtml.setValue(localStorage.getItem("codeHtml"))
-    editorUpdate.setValue(localStorage.getItem("codeUpdate"))
+    editorInit.session.setValue(localStorage.getItem("codeInit"))
+    editorHtml.session.setValue(localStorage.getItem("codeHtml"))
+    editorUpdate.session.setValue(localStorage.getItem("codeUpdate"))
 
   }
 
