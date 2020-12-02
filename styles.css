@@ -1,3 +1,35 @@
+button{
+  cursor: url("https://www.shareicon.net/data/512x512/2016/06/06/776778_multimedia_512x512.png"), default;
+}
+#context-menu {
+  position:fixed;
+  z-index:10000;
+  width:150px;
+  background:#1b1a1a;
+  border-radius:5px;
+  transform:scale(0);
+  transform-origin:top left;
+}
+#context-menu.active {
+  transform:scale(1);
+  transition:transform 300ms ease-in-out;
+}
+#context-menu .item {
+  padding:8px 10px;
+  font-size:15px;
+  color:#eee;
+}
+#context-menu .item:hover {
+  background:#555;
+}
+#context-menu .item i {
+  display:inline-block;
+  margin-right:5px;
+}
+#context-menu hr {
+  margin:2px 0px;
+  border-color:#555;
+}
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
@@ -43,6 +75,7 @@
 }
 #editorHtml{ 
   width: 100%;
+  cursor: url("https://www.shareicon.net/data/512x512/2016/06/06/776778_multimedia_512x512.png"), auto;
   top: 0;
   right: 0;
   bottom: 0;
@@ -53,6 +86,7 @@
 }
 #editorInit { 
     top: 0;
+    cursor: url("https://www.shareicon.net/data/512x512/2016/06/06/776778_multimedia_512x512.png"), auto;
     right: 0;
     bottom: 0;
     left: 0;
@@ -62,6 +96,7 @@
 }
 #editorUpdate{ 
   top: 0;
+  cursor: url("https://www.shareicon.net/data/512x512/2016/06/06/776778_multimedia_512x512.png"), auto;
   right: 0;
   bottom: 0;
   left: 0;

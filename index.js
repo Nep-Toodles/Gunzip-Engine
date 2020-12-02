@@ -9,10 +9,27 @@ function encodeImageFileAsURL(element) {
 }
 window.onbeforeunload = () => location.reload()
 window.onload = function (event) {
-
   //Saving
+  //var beautify = ace.require("ace/ext/beautify")
   function beatify() {
-    
+    var val = editorInit.session.getValue();
+  //Remove leading spaces
+    var array = val.split(/\n/);
+    array[0] = array[0].trim();
+    val = array.join("\n"); 
+  //Actual beautify (prettify) 
+    val = js_beautify(val);
+  //Change current text to formatted text
+    editorInit.session.setValue(val);
+      var val = editorUpdate.session.getValue();
+  //Remove leading spaces
+    var array = val.split(/\n/);
+    array[0] = array[0].trim();
+    val = array.join("\n"); 
+  //Actual beautify (prettify) 
+    val = js_beautify(val);
+  //Change current text to formatted text
+    editorUpdate.session.setValue(val);
   }
 
 
@@ -131,7 +148,7 @@ window.onload = function (event) {
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
-  editorHtml.resize()
+    editorHtml.resize()
     editorInit.setValue(codeinit)
     editorHtml.setValue(localStorage.getItem("codeHtml"))
     editorUpdate.setValue(codeupdate)
@@ -161,6 +178,9 @@ window.onload = function (event) {
     editorInit.resize()
     editorUpdate.resize()
     editorHtml.resize()
+    editorInit.setValue(localStorage.getItem("codeInit"))
+    editorInit.focus()
+    editorInit.moveCursorTo(0, 0);
     document.getElementById("scriptView").style.width = "46%"
     document.getElementById("sceneView").style.width = "24%"
     document.getElementById("imageView").style.width = "26%"
@@ -170,21 +190,27 @@ window.onload = function (event) {
 
   }
   document.getElementById("html").onclick = () => {
+    editorHtml.setValue(localStorage.getItem("codeHtml"))
     editorHtml.focus()
+    editorHtml.moveCursorTo(0, 0);
     document.getElementById("editorHtmlContainer").style.display = "block";
     document.getElementById("editorInitContainer").style.display = "none";
     document.getElementById("editorUpdateContainer").style.display = "none";
 
   }
   document.getElementById("update").onclick = () => {
+    editorUpdate.setValue(localStorage.getItem("codeUpdate"))
     editorUpdate.focus()
+    editorUpdate.moveCursorTo(0, 0);
     document.getElementById("editorHtmlContainer").style.display = "none";
     document.getElementById("editorInitContainer").style.display = "none";
     document.getElementById("editorUpdateContainer").style.display = "block";
 
   }
   document.getElementById("init").onclick = () => {
+    editorInit.setValue(localStorage.getItem("codeInit"))
     editorInit.focus()
+    editorInit.moveCursorTo(0, 0);
     document.getElementById("editorHtmlContainer").style.display = "none";
     document.getElementById("editorInitContainer").style.display = "block";
     document.getElementById("editorUpdateContainer").style.display = "none";
@@ -337,18 +363,21 @@ window.onload = function (event) {
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
       </html>`;
-
+    
     name = prompt("Please Enter Your Game's name")
     var blob = new Blob([iframe.srcdoc.toString()], {
       type: "text/plain;charset=utf-8"
     });
-    if (name != undefined || name != null) {
+    if (name !== undefined || name !== null || name !== "") {
       saveAs(blob, name + ".gunz.html")
+      document.getElementById("ExportingPopup").style.display = "block"
     } else {
       alert("Please enter a vaild name")
+      document.getElementById("ExportingPopup").style.marginLeft = "-150px"
+      document.getElementById("ExportingPopup").style.display = "block"
+      
     }
   }
   //Events of Tab windows End
   setInterval(SaveNewCode, 1000)
-  //console.clear()
 }

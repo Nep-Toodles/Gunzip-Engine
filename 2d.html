@@ -2,38 +2,88 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, width=device-width">
-    <title>Gunzip Engine</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="stylesheet" href="frameworks/materialize.css" />
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, width=device-width">
+	<title>Gunzip Engine</title>
+	<link rel="stylesheet" href="styles.css" />
+	<link rel="stylesheet" href="frameworks/materialize.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+	 crossorigin="anonymous">
+	</script>
+	<script src="contextmenu.js">
 
-    <script src="frameworks/jquery.js"></script>
-    <script src="frameworks/notify.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js"
-        integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ=="
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
-        integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
-        crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
-        integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg=="
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"
-        integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.min.js"
-        integrity="sha512-8qx1DL/2Wsrrij2TWX5UzvEaYOFVndR7BogdpOyF4ocMfnfkw28qt8ULkXD9Tef0bLvh3TpnSAljDC7uyniEuQ=="
-        crossorigin="anonymous"></script>
-    <script src="index.js"></script>
-    <script src="frameworks/materialize.min.js"></script>
+	</script>
+	<script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.0/js/lib/beautify.js">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+	 crossorigin="anonymous">
+	</script>
+	<script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.0/js/lib/beautify-css.js">
+
+	</script>
+	<script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.0/js/lib/beautify-html.js">
+
+	</script>
+	<script src="frameworks/jquery.js">
+
+	</script>
+	<script src="frameworks/notify.min.js">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ=="
+	 crossorigin="anonymous">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+	 crossorigin="anonymous">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg=="
+	 crossorigin="anonymous">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q=="
+	 crossorigin="anonymous">
+
+	</script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ext-language_tools.min.js" integrity="sha512-8qx1DL/2Wsrrij2TWX5UzvEaYOFVndR7BogdpOyF4ocMfnfkw28qt8ULkXD9Tef0bLvh3TpnSAljDC7uyniEuQ=="
+	 crossorigin="anonymous">
+
+	</script>
+	<script src="index.js">
+
+	</script>
+	<script src="frameworks/materialize.min.js">
+
+	</script>
 </head>
 
 <body>
-    <div class="grey lighten-1" id="overlay">
-        <div id="header" class="panel row grey lighten-1">
-            <a href="index.html" class="btn left grey darken-1"><i class="material-icons">fast_rewind</i></a>
+  <div style="position:absolute;width:70%;align:center;z-index:500;display:none;" id="ExportingPopup">
+ <img src="https://media2.giphy.com/media/3o6ZsYLRb6IG6vAkcU/giphy.gif" alt="" loading="lazy">
+  </div>
+	<div id="context-menu">
+		<div class="item">
+			<i onclick="document.execCommand('cut')" class="fa fa-cut"></i> Cut [CTRL + X]
+  </div>
+  <div class="item">
+    <i onclick="document.execCommand('copy')" class="fa fa-clone"></i> Copy [CTRL + C]
+  </div>
+  <div class="item">
+    <i onclick="document.execCommand('paste')" class="fa fa-paste"></i> Paste [CTRL + V]
+  </div>
+  <hr>
+  <div class="item">
+    <i class="fa fa-times"></i> Command palette [F1]
+  </div>
+</div>
+	<div id="header" class="panel row grey lighten-1">
+		
+			<a href="index.html" class="btn left grey darken-1"><i class="material-icons">fast_rewind</i></a>
             <button id="sceneView" style="width:36%;font-size:large"
                 class="white black-text darken-3 waves-white btn left waves-effect">SceneView <i
                     class="material-icons big">crop_landscape</i></button>
@@ -105,7 +155,7 @@
                    </label>
                 </div>
                 <button onclick="document.execCommand('copy')" style="width: 100%;">Copy</button>
-                <div id="ImageCode" style="height: 190px;overflow: scroll;">
+                <div id="ImageCode" style="height: 190px;overflow: scroll;color:green;">
                     Put Your Image up there or drag it here to convert it to actual image and DONT USE LINKS like https://google.com/image.png if you do so then download it and upload it above or it will show errors.
                 </div>
             </div>
