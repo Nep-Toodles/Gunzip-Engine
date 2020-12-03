@@ -30,9 +30,22 @@ window.onload = function (event) {
     val = js_beautify(val);
   //Change current text to formatted text
     editorUpdate.session.setValue(val);
+    var val = editorHtml.session.getValue();
+  //Remove leading spaces
+    var array = val.split(/\n/);
+    array[0] = array[0].trim();
+    val = array.join("\n"); 
+  //Actual beautify (prettify) 
+    val = html_beautify(val);
+  //Change current text to formatted text
+    editorHtml.session.setValue(val);
+
   }
 
-
+  keyboardJS.bind("shift + F",(e)=>{
+    e.preventDefault()
+      beatify()
+  })
   //Notification SAVE
   $.notify.defaults({
     className: "success"
@@ -124,22 +137,18 @@ window.onload = function (event) {
 
   ace.config.loadModule('ace/ext/language_tools')
 
-
-  codeinit = localStorage.getItem("codeInit")
-  codeupdate = localStorage.getItem("codeUpdate")
-
-  if (codeinit == undefined || codeinit == null) {
+  if (typeof localStorage.getItem("codeInit") == undefined || typeof localStorage.getItem("codeInit") == null) {
 
     function SaveNewCode() {
       beatify()
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
       localStorage.setItem("codeHtml", editorHtml.getValue())
-      codehtml = localStorage.getItem("codeHtml")
 
     }
-    editorInit.setValue(codeinit)
-    editorUpdate.setValue(codeupdate)
+    editorInit.setValue(localStorage.getItem("codeInit"))
+    editorUpdate.setValue(localStorage.getItem("codeUpdate"))
+    editorHtml.setValue(localStorage.getItem("codeHtml"))
   } else {
     beatify()
 
@@ -149,9 +158,9 @@ window.onload = function (event) {
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
     editorHtml.resize()
-    editorInit.setValue(codeinit)
-    editorHtml.setValue(localStorage.getItem("codeHtml"))
-    editorUpdate.setValue(codeupdate)
+    editorInit?.setValue(localStorage.getItem("codeInit"))
+    editorHtml?.setValue(localStorage.getItem("codeHtml"))
+    editorUpdate?.setValue(localStorage.getItem("codeUpdate"))
 
   }
 
@@ -375,6 +384,26 @@ window.onload = function (event) {
       alert("Please enter a vaild name")
       document.getElementById("ExportingPopup").style.marginLeft = "-150px"
       document.getElementById("ExportingPopup").style.display = "block"
+      
+    }
+  }
+  //Project Export
+  document.getElementById("build2").onclick = () => {
+    iframe.srcdoc = `<script>document.addEventListener('contextmenu', event => event.preventDefault());</script>`;
+    
+    name = prompt("Please Enter Your Project's name to be downloaded.")
+    if (name !== undefined || name !== null || name !== "") {
+      saveAs(new Blob([`// WARNING DONT EDIT OR CHANGE ANYTHING HERE PLEASE DOING SO WILL RESULT IN HIGHT ISSUE
+/*mit lisenced : We give you the code but it is your responsibily to hadle it.*/
+localStorage.setItem('codeHtml',localStorage.getItem('codeHtml'))
+localStorage.setItem('codeInit',localStorage.getItem('codeInit'))
+localStorage.setItem('codeUpdate',localStorage.getItem('codeUpdate')`],{type : "text/plain"}), name + ".gunzip")
+      document.getElementById("ExportingPopup").style.display = "block"
+    } else {
+      alert("Please enter a vaild name")
+      document.getElementById("ExportingPopup").style.marginLeft = "-150px"
+      document.getElementById("ExportingPopup").style.display = "block"
+      setTimeout(()=>{},1500)
       
     }
   }

@@ -2,7 +2,7 @@
 Try out the Enviroment Live now by clicking here :       
             https://Gunzip-Engine.gunzip.repl.co
 
-features : 
+# features : 
 ## Full functional Preview 
 ![full preview](https://i.pinimg.com/originals/26/71/75/267175578fee52073fd0b9af51516f56.gif)  
 ## live-syntax-code-editor 
@@ -18,4 +18,10 @@ features :
 
 ![](https://media2.giphy.com/media/U5OqOdBmeLH7dKi7qB/giphy.gif)
 
-#### Go to Proects to see the development :>
+#### Get Your but ready now :}
+```JS
+var audio = new Audio()
+audio.src= "https://gaana.com/song/closer-687"
+audio.play()
+``` 
+![](https://media1.giphy.com/media/26tn33aiTi1jkl6H6/source.gif)

@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="frameworks/materialize.css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
 	 crossorigin="anonymous">
+
 	</script>
 	<script src="contextmenu.js">
 
@@ -18,6 +19,7 @@
 	</script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
 	 crossorigin="anonymous">
+
 	</script>
 	<script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.0/js/lib/beautify-css.js">
 
@@ -63,22 +65,22 @@
 </head>
 
 <body>
-  <div style="position:absolute;width:70%;align:center;z-index:500;display:none;" id="ExportingPopup">
- <img src="https://media2.giphy.com/media/3o6ZsYLRb6IG6vAkcU/giphy.gif" alt="" loading="lazy">
+	<div style="position:absolute;width:70%;align:center;z-index:500;display:none;" id="ExportingPopup">
+		<img src="https://media2.giphy.com/media/3o6ZsYLRb6IG6vAkcU/giphy.gif" alt="" loading="lazy">
   </div>
 	<div id="context-menu">
-		<div class="item">
-			<i onclick="document.execCommand('cut')" class="fa fa-cut"></i> Cut [CTRL + X]
+		<div onclick="document.execCommand('cut')" class="item">
+			Cut [CTRL + X]
   </div>
-  <div class="item">
-    <i onclick="document.execCommand('copy')" class="fa fa-clone"></i> Copy [CTRL + C]
+  <div onclick="document.execCommand('copy')" class="item">
+     Copy [CTRL + C]
   </div>
-  <div class="item">
-    <i onclick="document.execCommand('paste')" class="fa fa-paste"></i> Paste [CTRL + V]
+  <div onclick="document.execCommand('paste')" class="item">
+     Paste [CTRL + V]
   </div>
   <hr>
-  <div class="item">
-    <i class="fa fa-times"></i> Command palette [F1]
+  <div onclick="beautify()" class="item">
+     Preetify [SHIFT + F]
   </div>
 </div>
 	<div id="header" class="panel row grey lighten-1">
@@ -103,18 +105,29 @@
 
                 <!-- Modal Structure -->
                 <div id="Export" class="modal">
-                    <div class="modal-content">
+                    <div class=" modal-content">
                         <h4>Export Options</h4>
-                        <img style="width: 100px;height: auto;" class="img left img-responsive" src="images/html5.png"
+                        <img style="width: 100px;height: auto;" class="left" src="https://cdn.dribbble.com/users/783/screenshots/104300/shot_1295820312.gif"
                             alt="Html5 Export">
-                        <button class="plain btn btn-plain black" id="build">HTML5 [Super-Fast-Build]</button>
+                        <button class="plain btn waves-effect btn-plain black" id="build">HTML5 [Super-Fast-Build]</button>
+                        
+              
+                       
                     </div>
+                    <br>
+                    <br>
+                    <br><hr>
+                    <img style="width:130px;height:130px;" loading="lazy" class="left" src="https://i.gifer.com/SX9Z.gif" alt="">
+                        <button class="plain btn btn-plain black-text waves-effect white" id="build2">Project File export </button>
                     <div class="modal-footer">
+                      
+                       
+                    
                         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
                     </div>
                 </div>
             </div>
-            <di  id="scenesMenu">
+            <div  id="scenesMenu">
                 <div class="row grey lighten-2">
                     <button style="width: 6%;" id="stop" class="btn right red"><i
                             class="material-icons">stop</i></button>
@@ -131,7 +144,8 @@
                             class="large white-text material-icons">color_lens</i></label>
                 </div>
                 <div style="overflow: hidden;" id="display">
-                    <div class="debugger">
+                    <div style="" id="debugg" class="black white-text">
+
                     </div>
                     <iframe style="overflow: hidden;" id="iframe">
                         Sorry Looks like u disabled javascript :/ if it is a stupid experiment dont do it please
@@ -142,7 +156,8 @@
                     </div>
                 </div>
 
-            </di>
+            </div>
+
             <!--IMAGED WINDOW-->
             <div style="display:none;overflow: hidden;" id="imageMenu">
                 <div class="blue" style="width:100%;height:400px;">
@@ -181,14 +196,16 @@
   </div>
 </div>
 <div id="editorUpdateContainer">
-                <div id="editorUpdate">//Your code will be saved automatically and will be loaded if you click here :>
+                <div id="editorUpdate">//I will do your code 60 times a frame :}
 
                 </div>
                 </div>
                 <div id="editorHtmlContainer">
                     <div id="editorHtml">Nothing to see Here click here to open your previous saved file</div>
                     </div>
+                
             </div>
+
         </div>
 
 </body>
