@@ -1,6 +1,7 @@
 button{
   cursor: url("https://www.shareicon.net/data/512x512/2016/06/06/776778_multimedia_512x512.png"), default;
 }
+
 #context-menu {
   position:fixed;
   z-index:10000;

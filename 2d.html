@@ -86,6 +86,7 @@
 	<div id="header" class="panel row grey lighten-1">
 		
 			<a href="index.html" class="btn left grey darken-1"><i class="material-icons">fast_rewind</i></a>
+            <button id="consoleView" class="black white-text darken-3 waves-white btn left waves-effect">$ <i class="material-icons">dns</i></button>
             <button id="sceneView" style="width:36%;font-size:large"
                 class="white black-text darken-3 waves-white btn left waves-effect">SceneView <i
                     class="material-icons big">crop_landscape</i></button>
@@ -135,6 +136,8 @@
                             class="material-icons">play_arrow</i></button>
                     <button style="width: 6%;" id="debug" class="btn right grey darken-2"><i
                             class="material-icons">play_circle_filled</i></button>
+                    <button style="width: 6%;" id="preview" class="btn right grey darken-2"><i
+                            class="material-icons">preview</i></button>
 
                     <button data-target="Export" style="width: 9%;" class="btn left white modal-trigger waves-light"><i
                             class="material-icons black-text">build</i></button>
@@ -144,9 +147,7 @@
                             class="large white-text material-icons">color_lens</i></label>
                 </div>
                 <div style="overflow: hidden;" id="display">
-                    <div style="" id="debugg" class="black white-text">
-
-                    </div>
+                  
                     <iframe style="overflow: hidden;" id="iframe">
                         Sorry Looks like u disabled javascript :/ if it is a stupid experiment dont do it please
                     </iframe>

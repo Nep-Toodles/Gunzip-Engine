@@ -13,38 +13,38 @@ window.onload = function (event) {
   //var beautify = ace.require("ace/ext/beautify")
   function beatify() {
     var val = editorInit.session.getValue();
-  //Remove leading spaces
+    //Remove leading spaces
     var array = val.split(/\n/);
     array[0] = array[0].trim();
-    val = array.join("\n"); 
-  //Actual beautify (prettify) 
+    val = array.join("\n");
+    //Actual beautify (prettify) 
     val = js_beautify(val);
-  //Change current text to formatted text
+    //Change current text to formatted text
     editorInit.session.setValue(val);
-      var val = editorUpdate.session.getValue();
-  //Remove leading spaces
+    var val = editorUpdate.session.getValue();
+    //Remove leading spaces
     var array = val.split(/\n/);
     array[0] = array[0].trim();
-    val = array.join("\n"); 
-  //Actual beautify (prettify) 
+    val = array.join("\n");
+    //Actual beautify (prettify) 
     val = js_beautify(val);
-  //Change current text to formatted text
+    //Change current text to formatted text
     editorUpdate.session.setValue(val);
     var val = editorHtml.session.getValue();
-  //Remove leading spaces
+    //Remove leading spaces
     var array = val.split(/\n/);
     array[0] = array[0].trim();
-    val = array.join("\n"); 
-  //Actual beautify (prettify) 
+    val = array.join("\n");
+    //Actual beautify (prettify) 
     val = html_beautify(val);
-  //Change current text to formatted text
+    //Change current text to formatted text
     editorHtml.session.setValue(val);
 
   }
 
-  keyboardJS.bind("shift + F",(e)=>{
+  keyboardJS.bind("shift + F", (e) => {
     e.preventDefault()
-      beatify()
+    beatify()
   })
   //Notification SAVE
   $.notify.defaults({
@@ -158,9 +158,9 @@ window.onload = function (event) {
       localStorage.setItem("codeUpdate", editorUpdate.getValue())
     }
     editorHtml.resize()
-    editorInit?.setValue(localStorage.getItem("codeInit"))
-    editorHtml?.setValue(localStorage.getItem("codeHtml"))
-    editorUpdate?.setValue(localStorage.getItem("codeUpdate"))
+    editorInit ?.setValue(localStorage.getItem("codeInit"))
+    editorHtml ?.setValue(localStorage.getItem("codeHtml"))
+    editorUpdate ?.setValue(localStorage.getItem("codeUpdate"))
 
   }
 
@@ -230,7 +230,6 @@ window.onload = function (event) {
   document.getElementById("run").onclick = () => {
     $("#debugger").hide()
     setTimeout(machet, 100);
-
     function machet() {
       //alert("machet");
       document.getElementById("iframe").contentWindow.focus();
@@ -266,21 +265,55 @@ window.onload = function (event) {
       </html>`;
     }, 1000)
   }
-
-  //@Important  DEBUGGIN MODE
-  document.getElementById("debug").onclick = () => {
-    setTimeout(machet, 100);
-
-    function machet() {
-      //alert("machet");
-      document.getElementById("iframe").contentWindow.focus();
-    }
-    $("#debugger").show()
-
-    //When First time loaded do this
+document.getElementById("preview").onclick = () => {
+    
     setTimeout(() => {
 
       iframe.srcdoc = `<html>
+      <head>
+      <title>Made With Gunzip Engine</title>
+      <style>
+      canvas{
+        width:100%;
+        height:100%;
+
+        overflow : hidden;
+      }
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      </style>
+      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+       </head>
+      <body>
+      ` + editorHtml.getValue() + `
+      <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+      <img style="display:none" id="imageid" src="">
+      <canvas style="display:none" id="imgCanvas" />
+      </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
+      </html>`;
+    }, 1000)
+  }
+  //@Important  DEBUGGIN MODE
+  document.getElementById("preview").onclick = () => {
+    //When First time loaded do this
+    mywindow = window.open("","_blank","toolbar=no,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400")
+   document.body.style.opacity = "10%"
+    var popupTick = setInterval(function() {
+      if (mywindow.closed) {
+        setTimeout(()=>{ document.body.style.opacity = "100%"},100)
+        clearInterval(popupTick);
+        document.body.style.opacity = "100%"
+      }else{
+
+      }
+    }, 500);
+    setTimeout(() => {
+    mywindow.document.write(`<html>
       <head>
       <style>
       canvas{
@@ -304,12 +337,13 @@ window.onload = function (event) {
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
-      </html>`;
+      </html>`);
     }, 1000)
 
   }
   // @Important Stop Stops the everything
   document.getElementById("stop").onclick = () => {
+    var divId = document.getElementById("debugger").innerHTML = "";
     console.clear()
     $("#debugger").show()
     setTimeout(() => {
@@ -372,7 +406,7 @@ window.onload = function (event) {
       
       </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
       </html>`;
-    
+
     name = prompt("Please Enter Your Game's name")
     var blob = new Blob([iframe.srcdoc.toString()], {
       type: "text/plain;charset=utf-8"
@@ -384,27 +418,27 @@ window.onload = function (event) {
       alert("Please enter a vaild name")
       document.getElementById("ExportingPopup").style.marginLeft = "-150px"
       document.getElementById("ExportingPopup").style.display = "block"
-      
+
     }
   }
   //Project Export
   document.getElementById("build2").onclick = () => {
     iframe.srcdoc = `<script>document.addEventListener('contextmenu', event => event.preventDefault());</script>`;
-    
+
     name = prompt("Please Enter Your Project's name to be downloaded.")
     if (name !== undefined || name !== null || name !== "") {
       saveAs(new Blob([`// WARNING DONT EDIT OR CHANGE ANYTHING HERE PLEASE DOING SO WILL RESULT IN HIGHT ISSUE
 /*mit lisenced : We give you the code but it is your responsibily to hadle it.*/
-localStorage.setItem('codeHtml',localStorage.getItem('codeHtml'))
-localStorage.setItem('codeInit',localStorage.getItem('codeInit'))
-localStorage.setItem('codeUpdate',localStorage.getItem('codeUpdate')`],{type : "text/plain"}), name + ".gunzip")
+localStorage.setItem('codeHtml',`+localStorage.getItem('codeHtml')+`)
+localStorage.setItem('codeInit',`+localStorage.getItem('codeInit')+`)
+localStorage.setItem('codeUpdate',`+localStorage.getItem('codeUpdate')+`)`], { type: "text/plain" }), name + ".gunzip")
       document.getElementById("ExportingPopup").style.display = "block"
     } else {
       alert("Please enter a vaild name")
       document.getElementById("ExportingPopup").style.marginLeft = "-150px"
       document.getElementById("ExportingPopup").style.display = "block"
-      setTimeout(()=>{},1500)
-      
+      setTimeout(() => {document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+
     }
   }
   //Events of Tab windows End
