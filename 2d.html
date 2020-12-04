@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, width=device-width">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Gunzip Engine</title>
 	<link rel="stylesheet" href="styles.css" />
 	<link rel="stylesheet" href="frameworks/materialize.css" />
@@ -11,6 +11,7 @@
 	 crossorigin="anonymous">
 
 	</script>
+
 	<script src="contextmenu.js">
 
 	</script>
@@ -65,7 +66,7 @@
 </head>
 
 <body>
-	<div style="position:absolute;width:70%;align:center;z-index:500;display:none;" id="ExportingPopup">
+	<div style="position:absolute;width:100%;height:100%align:center;z-index:500;display:none;" id="ExportingPopup">
 		<img src="https://media2.giphy.com/media/3o6ZsYLRb6IG6vAkcU/giphy.gif" alt="" loading="lazy">
   </div>
 	<div id="context-menu">
@@ -83,16 +84,16 @@
      Preetify [SHIFT + F]
   </div>
 </div>
-	<div id="header" class="panel row grey lighten-1">
+	<div id="header" style="margin:0%;" class="panel row grey lighten-1">
 		
 			<a href="index.html" class="btn left grey darken-1"><i class="material-icons">fast_rewind</i></a>
-            <button id="consoleView" class="black white-text darken-3 waves-white btn left waves-effect">$ <i class="material-icons">dns</i></button>
-            <button id="sceneView" style="width:36%;font-size:large"
+            <button id="consoleView" class="black white-text darken-3 waves-white btn left waves-effect">$Terminal<i class="material-icons">developer_mode</i></button>
+            <button id="sceneView" style="width:36vw;font-size:large"
                 class="white black-text darken-3 waves-white btn left waves-effect">SceneView <i
                     class="material-icons big">crop_landscape</i></button>
-            <button id="scriptView" style="width:30%;font-size:large" class="waves-effect darken-3 btn grey left"><i
+            <button id="scriptView" style="width:25.7vw;font-size:large" class="waves-effect darken-3 btn grey left"><i
                     class="large material-icons big">code</i> Script</button>
-            <button id="imageView" style="width:30%;font-size:large" class="waves-effect darken-3 btn yellow left"><i
+            <button id="imageView" style="width:25vw;font-size:large" class="waves-effect darken-3 btn yellow left"><i
                         class="large material-icons big">image</i> Imaged</button>
         </div>
         <div id="menus">
@@ -110,7 +111,7 @@
                         <h4>Export Options</h4>
                         <img style="width: 100px;height: auto;" class="left" src="https://cdn.dribbble.com/users/783/screenshots/104300/shot_1295820312.gif"
                             alt="Html5 Export">
-                        <button class="plain btn waves-effect btn-plain black" id="build">HTML5 [Super-Fast-Build]</button>
+                        <button class="plain btn waves-effect btn-plain black" id="build">HTML5 Build</button>
                         
               
                        
@@ -121,22 +122,37 @@
                     <img style="width:130px;height:130px;" loading="lazy" class="left" src="https://i.gifer.com/SX9Z.gif" alt="">
                         <button class="plain btn btn-plain black-text waves-effect white" id="build2">Project File export </button>
                     <div class="modal-footer">
-                      
-                       
+                      <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+
+                    <br><hr>
+                       <img style="width:130px;height:130px;" loading="lazy" class="left" src="https://i.pinimg.com/originals/bd/fd/9c/bdfd9ca1b8f840dc9da14f9824a79a35.gif" alt="">
+                        <button class="plain btn pink white-text waves-effect left" id="build3">HTML to Image Export</button>
+                    <div class="modal-footer">
                     
                         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
                     </div>
                 </div>
             </div>
+
+            <!--Console Window-->
+            <div style="display:none;width:100%;height:100%;" class="black white-text" id="consoleWindow">
+              <div style="width:100%;font-size:30px;" class="waves-effect center-align grey">Console [Run the project]</div>
+              <div style="overflow:scroll;width:100%;height:60vm;" id="termux"></div>
+              <div style="margin-top:39.0%;position:relative;" id="input page-footer"><input id="termux-input" placeholder=">>> Type console.log('HelloWorld')" style="border:1px solid grey;" type="text" name="" class="white-text" id="termuxInput"></div>
+            </div>
             <div  id="scenesMenu">
-                <div class="row grey lighten-2">
+                <div style="margin:0%;" class="row grey lighten-2">
                     <button style="width: 6%;" id="stop" class="btn right red"><i
                             class="material-icons">stop</i></button>
                     <button style="width: 6%;" id="run" class="btn right white grey-text"><i
                             class="material-icons">play_arrow</i></button>
                     <button style="width: 6%;" id="debug" class="btn right grey darken-2"><i
                             class="material-icons">play_circle_filled</i></button>
-                    <button style="width: 6%;" id="preview" class="btn right grey darken-2"><i
+                    <button style="width: 6%;" id="preview" class="btn right purple darken-2"><i
                             class="material-icons">preview</i></button>
 
                     <button data-target="Export" style="width: 9%;" class="btn left white modal-trigger waves-light"><i
@@ -146,12 +162,13 @@
                             style="display: none;" type="color" /> <i style="font-size: large;"
                             class="large white-text material-icons">color_lens</i></label>
                 </div>
+                
                 <div style="overflow: hidden;" id="display">
-                  
+                   
                     <iframe style="overflow: hidden;" id="iframe">
                         Sorry Looks like u disabled javascript :/ if it is a stupid experiment dont do it please
                     </iframe>
-                    <div style="position:absolute;width: 100%;margin-top: 59px;" class="blue white-text"
+                    <div class="blue white-text"
                         id="downInfo">
                         X : 0 Y : 0 ScreenX :0 ScreenY : 0
                     </div>
@@ -183,12 +200,12 @@
         <div style="height: 50%;" id="scriptingWindow">
 
             
-            <div id="files" style="width: auto;height: 100%;" class="pannel blue lighten-3 row">
+            <div id="files" style="width: auto;height: 100%;margin:0%;" class="pannel blue lighten-3 row">
                 <div id="init" style="width: 31%;" class="btn left waves-effect huge white pink-text lighten-1">init.<i>js</i> <i
                         class="material-icons">settings_ethernet</i></div>
                 <div id="update" style="width: 33%;"  class="tooltipped left btn waves-effect white pink-text lighten-1" data-position="top" data-tooltip="Update.js file">update.<i>js</i> <i
                         class="material-icons">settings_ethernet</i></div>
-                        <div id="html" style="width: 35%;"  class="tooltipped left btn waves-effect white pink-text lighten-1" data-position="top" data-tooltip="index.html file">main.<i>html</i> <i
+                        <div id="html" style="width: 35.9%;"  class="tooltipped left btn waves-effect white pink-text lighten-1" data-position="top" data-tooltip="index.html file">main.<i>html</i> <i
                             class="material-icons">settings_ethernet</i></div>
                         </div>
 <div id="editorInitContainer">

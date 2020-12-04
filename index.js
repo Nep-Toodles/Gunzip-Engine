@@ -1,3 +1,8 @@
+//On error Reload Automatically
+window.onerror = () => {
+  location.reload()
+}
+
 //Read Image a url
 function encodeImageFileAsURL(element) {
   var file = element.files[0];
@@ -7,8 +12,26 @@ function encodeImageFileAsURL(element) {
   }
   reader.readAsDataURL(file);
 }
-window.onbeforeunload = () => location.reload()
+window.ondrag = (ev) => {
+  ev.preventDefault()
+  e.stopPropagation()
+}
 window.onload = function (event) {
+  document.getElementById("termux-input").onchange = (e) => {
+    try {
+      e.preventDefault()
+      iframe.contentWindow.eval(e.target.value)
+      e.target.value = ""
+    } catch (e) {
+      alert("Gunzip Console said 😥:"+e)
+    }
+
+  }
+
+  document.getElementById("iframe").contentWindow.console.log = (ev) => {
+    document.getElementById("termux").innerText += ev.toString()
+  }
+  window.statusbar.visible = !window.statusbar.visible;
   //Saving
   //var beautify = ace.require("ace/ext/beautify")
   function beatify() {
@@ -95,6 +118,11 @@ window.onload = function (event) {
 
   </head>
   <body>
+   <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
   </body>
   </html>`;
@@ -167,32 +195,42 @@ window.onload = function (event) {
   document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
   //Events of Tab Window Start
   document.getElementById("imageView").onclick = () => {
-    document.getElementById("scriptView").style.width = "26%"
-    document.getElementById("sceneView").style.width = "24%"
-    document.getElementById("imageView").style.width = "46%"
+    document.getElementById("scriptView").style.width = "25.7%"
+    document.getElementById("sceneView").style.width = "25%"
+    document.getElementById("imageView").style.width = "36%"
     document.getElementById("imageMenu").style.display = "block";
+    document.getElementById("consoleWindow").style.display = "none";
     document.getElementById("scenesMenu").style.display = "none";
     document.getElementById("scriptingWindow").style.display = "none";
   }
   document.getElementById("sceneView").onclick = () => {
-    document.getElementById("scriptView").style.width = "26%"
-    document.getElementById("sceneView").style.width = "46%"
-    document.getElementById("imageView").style.width = "24%"
+    document.getElementById("consoleWindow").style.display = "none";
+    document.getElementById("scriptView").style.width = "25%"
+    document.getElementById("sceneView").style.width = "36%"
+    document.getElementById("imageView").style.width = "25.7%"
     document.getElementById("imageMenu").style.display = "none";
     document.getElementById("scenesMenu").style.display = "block";
     document.getElementById("scriptingWindow").style.display = "none";
 
   }
+  document.getElementById("consoleView").onclick = () => {
+    document.getElementById("consoleWindow").style.display = "block";
+    document.getElementById("imageMenu").style.display = "none";
+    document.getElementById("scenesMenu").style.display = "none";
+    document.getElementById("scriptingWindow").style.display = "none";
+
+  }
   document.getElementById("scriptView").onclick = () => {
+    document.getElementById("consoleWindow").style.display = "none";
     editorInit.resize()
     editorUpdate.resize()
     editorHtml.resize()
     editorInit.setValue(localStorage.getItem("codeInit"))
     editorInit.focus()
     editorInit.moveCursorTo(0, 0);
-    document.getElementById("scriptView").style.width = "46%"
-    document.getElementById("sceneView").style.width = "24%"
-    document.getElementById("imageView").style.width = "26%"
+    document.getElementById("scriptView").style.width = "36%"
+    document.getElementById("sceneView").style.width = "25.7%"
+    document.getElementById("imageView").style.width = "25%"
     document.getElementById("imageMenu").style.display = "none";
     document.getElementById("scenesMenu").style.display = "none";
     document.getElementById("scriptingWindow").style.display = "block";
@@ -228,7 +266,6 @@ window.onload = function (event) {
 
   ////@@@@ very important RUNNING THE PROGRAM
   document.getElementById("run").onclick = () => {
-    $("#debugger").hide()
     setTimeout(machet, 100);
     function machet() {
       //alert("machet");
@@ -257,16 +294,20 @@ window.onload = function (event) {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
        </head>
       <body>
+      <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
       ` + editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
-      <img style="display:none" id="imageid" src="">
-      <canvas style="display:none" id="imgCanvas" />
-      </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
+      
+      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);};}` + `</script></body>
       </html>`;
     }, 1000)
   }
-document.getElementById("preview").onclick = () => {
-    
+  document.getElementById("debug").onclick = () => {
+
     setTimeout(() => {
 
       iframe.srcdoc = `<html>
@@ -290,30 +331,33 @@ document.getElementById("preview").onclick = () => {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
        </head>
       <body>
+      <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
       ` + editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
-      <img style="display:none" id="imageid" src="">
-      <canvas style="display:none" id="imgCanvas" />
-      </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
+      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);};}` + `</script></body>
       </html>`;
     }, 1000)
   }
   //@Important  DEBUGGIN MODE
   document.getElementById("preview").onclick = () => {
     //When First time loaded do this
-    mywindow = window.open("","_blank","toolbar=no,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400")
-   document.body.style.opacity = "10%"
-    var popupTick = setInterval(function() {
+    mywindow = window.open("", "_blank", "toolbar=no,top=500,left=500,width=400,height=400")
+    document.body.style.opacity = "10%"
+    var popupTick = setInterval(function () {
       if (mywindow.closed) {
-        setTimeout(()=>{ document.body.style.opacity = "100%"},100)
+        setTimeout(() => { document.body.style.opacity = "100%" }, 100)
         clearInterval(popupTick);
         document.body.style.opacity = "100%"
-      }else{
+      } else {
 
       }
     }, 500);
     setTimeout(() => {
-    mywindow.document.write(`<html>
+      mywindow.document.write(`<html>
       <head>
       <style>
       canvas{
@@ -333,17 +377,21 @@ document.getElementById("preview").onclick = () => {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
       </head>
       <body>
+      <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
       ` + editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
-      </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
+      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);}}` + `</script></body>
       </html>`);
     }, 1000)
 
   }
   // @Important Stop Stops the everything
   document.getElementById("stop").onclick = () => {
-    var divId = document.getElementById("debugger").innerHTML = "";
     console.clear()
     $("#debugger").show()
     setTimeout(() => {
@@ -368,7 +416,11 @@ document.getElementById("preview").onclick = () => {
       }
       </style>
       </head>
-      <body>    <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+      <body>  <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
       </body>
       </html>`;
@@ -404,7 +456,7 @@ document.getElementById("preview").onclick = () => {
       ` + editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
-      </div><script>window.onload=()=>{` + editorInit.getValue() + `;setInterval(()=>{` + editorUpdate.getValue() + `},10);};` + `</script></body>
+      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);};}` + `</script></body>
       </html>`;
 
     name = prompt("Please Enter Your Game's name")
@@ -412,12 +464,43 @@ document.getElementById("preview").onclick = () => {
       type: "text/plain;charset=utf-8"
     });
     if (name !== undefined || name !== null || name !== "") {
-      saveAs(blob, name + ".gunz.html")
       document.getElementById("ExportingPopup").style.display = "block"
+      setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+      saveAs(blob, name + ".gunz.html")
+      iframe.srcdoc = `<!DOCTYPE html>
+  <html>
+  <head>
+  <title>Made With Gunzip Engine</title>
+
+  </head>
+  <body>
+   <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
+  <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+  </body>
+  </html>`
     } else {
       alert("Please enter a vaild name")
-      document.getElementById("ExportingPopup").style.marginLeft = "-150px"
       document.getElementById("ExportingPopup").style.display = "block"
+      setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+      iframe.srcdoc = `<!DOCTYPE html>
+  <html>
+  <head>
+  <title>Made With Gunzip Engine</title>
+
+  </head>
+  <body>
+   <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
+  <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+  </body>
+  </html>`
 
     }
   }
@@ -427,20 +510,135 @@ document.getElementById("preview").onclick = () => {
 
     name = prompt("Please Enter Your Project's name to be downloaded.")
     if (name !== undefined || name !== null || name !== "") {
-      saveAs(new Blob([`// WARNING DONT EDIT OR CHANGE ANYTHING HERE PLEASE DOING SO WILL RESULT IN HIGHT ISSUE
-/*mit lisenced : We give you the code but it is your responsibily to hadle it.*/
-localStorage.setItem('codeHtml',`+localStorage.getItem('codeHtml')+`)
-localStorage.setItem('codeInit',`+localStorage.getItem('codeInit')+`)
-localStorage.setItem('codeUpdate',`+localStorage.getItem('codeUpdate')+`)`], { type: "text/plain" }), name + ".gunzip")
+      saveAs(new Blob([`localStorage.setItem('codeHtml','` + localStorage.getItem('codeHtml').toString() + `');
+localStorage.setItem('codeInit','`+ localStorage.getItem('codeInit').toString() + `');
+localStorage.setItem('codeUpdate','`+ localStorage.getItem('codeUpdate').toString() + `')`], { type: "text/plain" }), name + ".gunzip")
       document.getElementById("ExportingPopup").style.display = "block"
+      setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+      iframe.srcdoc = `<!DOCTYPE html>
+  <html>
+  <head>
+  <title>Made With Gunzip Engine</title>
+
+  </head>
+  <body>
+   <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
+  <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+  </body>
+  </html>`
     } else {
       alert("Please enter a vaild name")
-      document.getElementById("ExportingPopup").style.marginLeft = "-150px"
       document.getElementById("ExportingPopup").style.display = "block"
-      setTimeout(() => {document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+      setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+      iframe.srcdoc = `<!DOCTYPE html>
+  <html>
+  <head>
+  <title>Made With Gunzip Engine</title>
 
+  </head>
+  <body>
+   <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
+  <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+  </body>
+  </html>`
     }
   }
+  //Export to Gif or png
+  document.getElementById("build3").onclick = () => {
+
+
+    name = prompt("Please Enter Your Project's name to be downloaded.")
+    if (name !== undefined || name !== null || name !== "") {
+      iframe.srcdoc = `<html>
+      <head>
+      <title>Made With Gunzip Engine</title>
+      <style>
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      canvas{
+        width:100%;
+        height:100%;
+        overflow:hiden;
+      }
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      </style>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js" integrity="sha512-01CJ9/g7e8cUmY0DFTMcUw/ikS799FHiOA0eyHsUWfOetgbx/t6oV4otQ5zXKQyIrQGTHSmRVPIgrgLcZi/WMA==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+	 crossorigin="anonymous">
+
+      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+      </head>
+      <body>
+      ` + editorHtml.getValue() + `
+      <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+      
+      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);};}` + `</script>
+      <script>
+      window.onload =()=>{
+      domtoimage.toBlob(document.querySelector('*'))
+    .then(function (blob) {
+        window.saveAs(blob, '`+ name.toString() + `'+'.png');
+    });}</script>
+    </body>
+      </html>`;
+      document.getElementById("ExportingPopup").style.display = "block"
+      setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+      iframe.srcdoc = `<!DOCTYPE html>
+  <html>
+  <head>
+  <title>Made With Gunzip Engine</title>
+
+  </head>
+  <body>
+   <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
+  <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+  </body>
+  </html>`
+    } else {
+      iframe.srcdoc = `<!DOCTYPE html>
+  <html>
+  <head>
+  <title>Made With Gunzip Engine</title>
+
+  </head>
+  <body>
+   <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      </script>
+  <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+  </body>
+  </html>`
+      alert("Please enter a vaild name")
+      document.getElementById("ExportingPopup").style.display = "block"
+      setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+
+    }
+
+  }
+
   //Events of Tab windows End
   setInterval(SaveNewCode, 1000)
 }
