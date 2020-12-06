@@ -1,80 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Gunzip</title>
+<style>
+  .disabled{
+    pointer-events:none;
+  }
+</style>
 	<script src="frameworks/materialize.min.js">
 	</script>
 	<script src="frameworks/jquery.js">
 	</script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="frameworks/materialize.css">
+	<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase.js">
+
+	</script>
 </head>
 
-<body class="waves-effect blue darken-3 waves-block waves-circle waves-blue" style="width: 100%;height: auto;">
-
-	<header class="blue row">
-		<div style="margin: 0%;width: 100%;" class="flow-text center centar-align blue lighten-3 green-text  card-header ">
+<body class="blue darken-3 " style="width: 100%;height: auto;">
+	<div style="background:url(https://cdn.dribbble.com/users/1585453/screenshots/6732255/comp_1.gif);" id="uploadProject" class="modal">
+		<div class="modal-content">
+			<h1 align="center" class="waves-effect">Put your html file here</h1>
+			<hr>
+			<label class="btn green white-text">
+        Choose File [Html]
+    <input accept=".html,.txt,.gunz.html" id="project" style="display:none" type="file">
+    </label><br>
+ <label>Project's Name :<input id="exportToWebName" type="text" placeholder="My Project"/></label>
+    <br>
+     <button class="btn waves-effect green-text white modal-close" id="uploadProjectToWeb">Upload</button>
+    </div>
+    <div class="modal-footer">
+      <div class="waves-effect">[✔] By Uploading You accept that it is doesnt voilate any child.</div>
+    </div>
+  </div>
+	<header style="margin:0%;" class="blue row">
+		<div style="margin: 0%;padding:0%;width: 100%;" class="waves-effect flow-text center centar-align blue lighten-3 green-text  card-header ">
 			Gunzip Engine
 		</div>
 	</header>
-	<a style="width:20%;" class="btn waves-effect lighten-1 grey left modal-trigger" href="./2d.html">Open Editor</a>
-	<label style="width:20%;" class="btn right large">
+
+	<a style="width:30%;" class="btn waves-effect lighten-1 grey left modal-trigger" href="./2d.html">Open Editor</a>
+	<label style="width:30%;" class="btn right large">
         <input id="projectPicker"  type="file" single style="width:20%;display: none;" value="open Project"
             class="btn grey waves-effect darken-1 right" />
         Open Project
     </label>
-    <a style="width:100%;" class="pannel  flow-text green waves-effect lighten-3">Random Projects [Every Week]</a>
-    <div class="">
-        <iframe style="height: 540px;width:100%;position: relative;"  src="//examples.phaser.io/embed.php?f=games/invaders.js" frameborder="0"></iframe>
+    <div style="width:100%;" class="pannel  flow-text green waves-effect lighten-3">Community Projects</div>
+    <div class="projectContainer">
+      <button class="btn black modal-trigger" data-target="uploadProject" href="uploadProject" style="width:100%;margin:0%;" >Upload Project</button>
+        <div id="projects" class="" style="width:100%;height:20%;overflow:auto;direction:ltr;"><img style="width:100%;height:500px;position:relative;" src="https://i2.wp.com/onemansblog.com/wp-content/uploads/2016/05/Octopus-Loading.gif?fit=800%2C600&ssl=1" alt=""></div>
     </div>
 
-    <script>
-        
-       
-        var picker = document.getElementById("projectPicker")
-        picker.addEventListener('change', () => {
-        let files = picker.files;
+	
  
-    if(files.length == 0) return;
- 
-    const file = files[0];
- 
-    let reader = new FileReader();
- 
-    reader.onload = (e) => {
-        var file = e.target.result;
-        eval(file.toString())
-        document.href = "https://ed.gunzip.repl.co/2d.html"
-    };
- 
-    reader.onerror = (e) => alert(e.target.error.name);
- 
-    reader.readAsText(file); 
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+     var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+    var elems = document.querySelectorAll('.modal');
+    var instances = M.Modal.init(elems);
+  });
+
+  // window.onerror =()=> location.reload()
+		var firebaseConfig = {
+    apiKey: "AIzaSyCAKdFF5_hgM3FnytEW45sQty5UzFFSiXQ",
+    authDomain: "gunzipz.firebaseapp.com",
+    databaseURL: "https://gunzipz.firebaseio.com",
+    projectId: "gunzipz",
+    storageBucket: "gunzipz.appspot.com",
+    messagingSenderId: "255063467474",
+    appId: "1:255063467474:web:c6ab4f3923071b4ce5d40b",
+    measurementId: "G-SBE6QXGMPH"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  function uploadToWeb(a){
+    firebase.database().ref("projects/").push({
+      name : document.getElementById("exportToWebName").value,
+      codeHtml : a.toString(),
+    })
+  }
+  function UploadProject(){
+    file = document.getElementById("project")
     
+    const reader = new FileReader();
+    reader.addEventListener('load', (event) => {
+    const result = event.target.result;
+    uploadToWeb(result.toString());
+    alert("Success")
+    });
+    reader.readAsText(file.files[0]);
+  }
+  function deploy(){
+    var ref = firebase.database().ref("projects/");
+
+ref.orderByChild("vote").on("value", function(snapshot) {
+  document.getElementById("projects").innerHTML = ""
+   snapshot.forEach((it,id)=>{
+      var container = document.createElement("div")
+      var likeButton = document.createElement("button")
+      var dislikeButton = document.createElement("button")
+      var playButton = document.createElement("button")
+      var projectName = document.createElement("p")
+      container.style = "overflow:hidden;border:2px solid black;border-radius:5.0%;overflow:auto;overflow:hidden;width:25%;align:left;display:inline-block;"
+      container.className = "card left waves-effect"
+      var image = document.createElement("img")
+      image.loading = "lazy"
+      image.className = "waves-effect"
+      image.style = "width:100%"
+      image.src = "https://cdn.lowgif.com/full/42213d6862f9fa9c-gif-animated-character-on-pinterest-pusheen-cartoon.gif"
+      projectName.className='left-align bold center-align'
+      projectName.style='width:100%;font-size:100%;font-weight:bold;'
+      projectName.innerHTML = it.val().name.toString()
+      projectName.innerHTML += "<br><i>Votes : </i>" + it.val().vote.toString()
+      likeButton.className="btn green left waves-effect"
+      likeButton.innerText = "👍"
+      likeButton.onclick = (ev)=>{
+        ev.preventDefault()
+        likeButton.classList.add("disabled")
+        var johnRef = firebase.database().ref("projects/"+it.key.toString());
+        johnRef.update ({
+        "vote": it.val().vote + 1
+          });
+      }
+      dislikeButton.onclick = ()=>{ 
+        dislikeButton.classList.add("disabled")
+        var johnRef = firebase.database().ref("projects/"+it.key.toString());
+        johnRef.update ({
+        "vote": it.val().vote - 1
+        });
+       
+      }
+      dislikeButton.className="btn red left waves-effect"
+      dislikeButton.innerText = "👎"
+      playButton.className="material-icons btn blue  white-text waves-effect"
+      playButton.innerText = "▶"
+      dislikeButton.style = "margin:0%;"
+      likeButton.style = "margin:0%;"
+      playButton.style = "width:70%;margin:0%;"
+      playButton.onclick = ()=>{
+        window.open('gunzipnet.com','/Bibekz').document.write(it.val().codeHtml.toString());
+      }
+      container.appendChild(projectName)
+      container.appendChild(image)
+      container.appendChild(likeButton)
+      container.appendChild(playButton)
+      container.appendChild(dislikeButton)
+      document.getElementById("projects").appendChild(container)
+
+     })
+   
+}, function (error) {
+   console.log("Error: " + error.code);
 });
-        window.onbeforeunload = function (e) {
-            e.preventDefault();
-            e.returnValue = 'Really want to quit the program?';
-        };
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        document.onkeydown = function (e) {
-            e = e || window.event;
+  }
+  deploy()
+    document.getElementById("uploadProjectToWeb").onclick = ()=>{ 
+      UploadProject()
+    }
 
-            if (!e.ctrlKey) return;
 
-            var code = e.which || e.keyCode;
+</script>
 
-            switch (code) {
-                case 83:
-                case 87:
-                    e.preventDefault();
-                    e.stopPropagation();
-                    break;
-            }
-        };
-    </script>
+
+
+
+
+<script>
+
+var picker = document.getElementById("projectPicker")
+picker.addEventListener('change', () => {
+  let files = picker.files;
+
+  if (files.length == 0) return;
+
+  const file = files[0];
+
+  let reader = new FileReader();
+
+  reader.onload = (e) => {
+    var file = e.target.result;
+    eval(file.toString())
+    document.href = "https://ed.gunzip.repl.co/2d.html"
+  };
+
+  reader.onerror = (e) => alert(e.target.error.name);
+
+  reader.readAsText(file);
+
+});
+window.onbeforeunload = function (e) {
+  e.preventDefault();
+  e.returnValue = 'You want to open the editor?';
+};
+document.addEventListener('contextmenu', event => event.preventDefault());
+document.onkeydown = function (e) {
+  e = e || window.event;
+
+  if (!e.ctrlKey) return;
+
+  var code = e.which || e.keyCode;
+
+  switch (code) {
+    case 83:
+    case 87:
+      e.preventDefault();
+      e.stopPropagation();
+      break;
+  }
+};
+</script>
 </body>
 
 </html>
