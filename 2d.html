@@ -11,10 +11,6 @@
 	 crossorigin="anonymous">
 
 	</script>
-
-	<script src="contextmenu.js">
-
-	</script>
 	<script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.0/js/lib/beautify.js">
 
 	</script>
@@ -69,21 +65,6 @@
 	<div style="position:absolute;width:100%;height:100%align:center;z-index:500;display:none;" id="ExportingPopup">
 		<img src="https://media2.giphy.com/media/3o6ZsYLRb6IG6vAkcU/giphy.gif" alt="" loading="lazy">
   </div>
-	<div id="context-menu">
-		<div onclick="document.execCommand('cut')" class="item">
-			Cut [CTRL + X]
-  </div>
-  <div onclick="document.execCommand('copy')" class="item">
-     Copy [CTRL + C]
-  </div>
-  <div onclick="document.execCommand('paste')" class="item">
-     Paste [CTRL + V]
-  </div>
-  <hr>
-  <div onclick="beautify()" class="item">
-     Preetify [SHIFT + F]
-  </div>
-</div>
 	<div id="header" style="margin:0%;" class="panel row grey lighten-1">
 		
 			<a href="index.html" class="btn left grey darken-1"><i class="material-icons">fast_rewind</i></a>
@@ -141,8 +122,8 @@
             <!--Console Window-->
             <div style="display:none;width:100%;height:100%;" class="black white-text" id="consoleWindow">
               <div style="width:100%;font-size:30px;" class="waves-effect center-align grey">Console [Run the project]</div>
-              <div style="overflow:scroll;width:100%;height:60vm;" id="termux"></div>
-              <div style="margin-top:39.0%;position:relative;" id="input page-footer"><input id="termux-input" placeholder=">>> Type console.log('HelloWorld')" style="border:1px solid grey;" type="text" name="" class="white-text" id="termuxInput"></div>
+              <div style="overflow:scroll;width:100%;height:40vm;position:fixed;" id="termux"></div>
+              <div style="margin-top:39.0%;position:fixed;width:100%;" id="input page-footer"><input id="termux-input" placeholder=">>> Type console.log('HelloWorld')" style="border:1px solid grey;" type="text" name="" class="white-text" id="termuxInput"></div>
             </div>
             <div  id="scenesMenu">
                 <div style="margin:0%;" class="row grey lighten-2">
