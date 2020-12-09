@@ -1,7 +1,11 @@
 //On error Reload Automatically
-window.onerror = () => {
-  location.reload()
-}
+
+window.onerror = ()=> location.reload()
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('.consoleCode').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
+});
 
 //Read Image a url
 function encodeImageFileAsURL(element) {
@@ -14,7 +18,7 @@ function encodeImageFileAsURL(element) {
 }
 window.ondrag = (ev) => {
   ev.preventDefault()
-  e.stopPropagation()
+  ev.stopPropagation()
 }
 window.onload = function (event) {
   document.getElementById("termux-input").onchange = (e) => {
@@ -23,7 +27,7 @@ window.onload = function (event) {
       iframe.contentWindow.eval(e.target.value)
       e.target.value = ""
     } catch (e) {
-      alert("Gunzip Console said 😥:"+e)
+      document.getElementById("termux").innerHTML += `<p class = 'consoleCode'>` +e.toString() +`</p>`
     }
 
   }
@@ -44,15 +48,15 @@ window.onload = function (event) {
     val = js_beautify(val);
     //Change current text to formatted text
     editorInit.session.setValue(val);
-    var val = editorUpdate.session.getValue();
+    var val = editorCss.session.getValue();
     //Remove leading spaces
     var array = val.split(/\n/);
     array[0] = array[0].trim();
     val = array.join("\n");
     //Actual beautify (prettify) 
-    val = js_beautify(val);
+    val = css_beautify(val);
     //Change current text to formatted text
-    editorUpdate.session.setValue(val);
+    editorCss.session.setValue(val);
     var val = editorHtml.session.getValue();
     //Remove leading spaces
     var array = val.split(/\n/);
@@ -122,12 +126,14 @@ window.onload = function (event) {
       console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
       console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
       console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
   </body>
   </html>`;
   var editorHtml = ace.edit("editorHtml");
-  document.getElementById("editorUpdateContainer").style.display = "none"; //by default only one editor is shown 
+  document.getElementById("editorCssContainer").style.display = "none"; //by default only one editor is shown 
   var editorInit = ace.edit("editorInit");
   editorHtml.setTheme("ace/theme/monokai");
   editorInit.setTheme("ace/theme/monokai");
@@ -150,11 +156,11 @@ window.onload = function (event) {
     enableLiveAutocompletion: true
   });
 
-  var editorUpdate = ace.edit("editorUpdate");
-  document.getElementById("editorHtmlContainer").style.display = "none";
-  editorUpdate.setTheme("ace/theme/monokai");
-  editorUpdate.session.setMode("ace/mode/javascript");
-  editorUpdate.setOptions({
+  var editorCss = ace.edit("editorCss");
+  document.getElementById("editorInitContainer").style.display = "none";
+  editorCss.setTheme("ace/theme/monokai");
+  editorCss.session.setMode("ace/mode/css");
+  editorCss.setOptions({
     enableLiveAutocompletion: true,
     enableBasicAutocompletion: true,
     enableSnippets: true,
@@ -166,29 +172,31 @@ window.onload = function (event) {
   ace.config.loadModule('ace/ext/language_tools')
 
   if (typeof localStorage.getItem("codeInit") == undefined || typeof localStorage.getItem("codeInit") == null) {
-
+      localStorage.setItem("codeInit", editorInit.getValue())
+      localStorage.setItem("codeCss", editorCss.getValue())
+      localStorage.setItem("codeHtml", editorHtml.getValue())
     function SaveNewCode() {
       beatify()
       localStorage.setItem("codeInit", editorInit.getValue())
-      localStorage.setItem("codeUpdate", editorUpdate.getValue())
+      localStorage.setItem("codeCss", editorCss.getValue())
       localStorage.setItem("codeHtml", editorHtml.getValue())
 
     }
-    editorInit.setValue(localStorage.getItem("codeInit"))
-    editorUpdate.setValue(localStorage.getItem("codeUpdate"))
-    editorHtml.setValue(localStorage.getItem("codeHtml"))
+    editorInit.setValue(``)
+    editorCss.setValue(``)
+    editorHtml.setValue(`Type Html5`)
   } else {
     beatify()
 
     function SaveNewCode() {
       localStorage.setItem("codeHtml", editorHtml.getValue())
       localStorage.setItem("codeInit", editorInit.getValue())
-      localStorage.setItem("codeUpdate", editorUpdate.getValue())
+      localStorage.setItem("codeCss", editorCss.getValue())
     }
     editorHtml.resize()
-    editorInit ?.setValue(localStorage.getItem("codeInit"))
-    editorHtml ?.setValue(localStorage.getItem("codeHtml"))
-    editorUpdate ?.setValue(localStorage.getItem("codeUpdate"))
+    editorInit.setValue(localStorage.getItem("codeInit") || "")
+    editorHtml.setValue(localStorage.getItem("codeHtml") || ``)
+    editorCss.setValue(localStorage.getItem("codeCss") || "")
 
   }
 
@@ -223,11 +231,11 @@ window.onload = function (event) {
   document.getElementById("scriptView").onclick = () => {
     document.getElementById("consoleWindow").style.display = "none";
     editorInit.resize()
-    editorUpdate.resize()
+    editorCss.resize()
     editorHtml.resize()
-    editorInit.setValue(localStorage.getItem("codeInit"))
-    editorInit.focus()
-    editorInit.moveCursorTo(0, 0);
+    editorHtml.setValue(localStorage.getItem("codeHtml"))
+    editorHtml.focus()
+    editorHtml.moveCursorTo(0, 0);
     document.getElementById("scriptView").style.width = "36%"
     document.getElementById("sceneView").style.width = "25.7%"
     document.getElementById("imageView").style.width = "25%"
@@ -242,16 +250,16 @@ window.onload = function (event) {
     editorHtml.moveCursorTo(0, 0);
     document.getElementById("editorHtmlContainer").style.display = "block";
     document.getElementById("editorInitContainer").style.display = "none";
-    document.getElementById("editorUpdateContainer").style.display = "none";
+    document.getElementById("editorCssContainer").style.display = "none";
 
   }
-  document.getElementById("update").onclick = () => {
-    editorUpdate.setValue(localStorage.getItem("codeUpdate"))
-    editorUpdate.focus()
-    editorUpdate.moveCursorTo(0, 0);
+  document.getElementById("css").onclick = () => {
+    editorCss.setValue(localStorage.getItem("codeCss"))
+    editorCss.focus()
+    editorCss.moveCursorTo(0, 0);
     document.getElementById("editorHtmlContainer").style.display = "none";
     document.getElementById("editorInitContainer").style.display = "none";
-    document.getElementById("editorUpdateContainer").style.display = "block";
+    document.getElementById("editorCssContainer").style.display = "block";
 
   }
   document.getElementById("init").onclick = () => {
@@ -260,7 +268,7 @@ window.onload = function (event) {
     editorInit.moveCursorTo(0, 0);
     document.getElementById("editorHtmlContainer").style.display = "none";
     document.getElementById("editorInitContainer").style.display = "block";
-    document.getElementById("editorUpdateContainer").style.display = "none";
+    document.getElementById("editorCssContainer").style.display = "none";
 
   }
 
@@ -271,8 +279,8 @@ window.onload = function (event) {
       //alert("machet");
       document.getElementById("iframe").contentWindow.focus();
     }
-    setTimeout(() => {
-
+    setInterval(()=>{
+      if(0 == 78){
       iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
@@ -280,7 +288,46 @@ window.onload = function (event) {
       canvas{
         width:100%;
         height:100%;
-
+        overflow : hidden;
+      }
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      </style>
+      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+       </head>
+      <body>
+      <script>
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.clear=(ev)=>{window.parent.document.getElementById("termux").innerHTML = "<p style='color:grey;'> >>>"+ev.toString()+"<p>"}
+      </script>
+      ` + editorHtml.getValue() + `
+      <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+      <style media="all">
+    `+editorCss.getValue().toString()+`
+    </style>
+      </div>
+      <script>`+
+       editorInit.getValue()
+       +`
+       </script>
+      </body>
+      </html>`;
+    }
+    },10)
+      iframe.srcdoc = `<html>
+      <head>
+      <title>Made With Gunzip Engine</title>
+      <style>
+      canvas{
+        width:100%;
+        height:100%;
         overflow : hidden;
       }
       *{
@@ -301,51 +348,27 @@ window.onload = function (event) {
       </script>
       ` + editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
-      
-      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);};}` + `</script></body>
+      <style media="all">
+    `+editorCss.getValue().toString()+`
+    </style>
+      </div>
+      <script>`+
+       editorInit.getValue()
+       +`
+       </script>
+      </body>
       </html>`;
-    }, 1000)
   }
   document.getElementById("debug").onclick = () => {
 
     setTimeout(() => {
-
-      iframe.srcdoc = `<html>
-      <head>
-      <title>Made With Gunzip Engine</title>
-      <style>
-      canvas{
-        width:100%;
-        height:100%;
-
-        overflow : hidden;
-      }
-      *{
-        overflow : hidden;
-        padding : 0px;
-        margin:0px;
-      }
-      </style>
-      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
-       </head>
-      <body>
-      <script>
-      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
-      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
-      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
-      </script>
-      ` + editorHtml.getValue() + `
-      <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
-      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);};}` + `</script></body>
-      </html>`;
+      window.open("https://editor.gunzip.repl.co/preview/")
     }, 1000)
   }
   //@Important  DEBUGGIN MODE
   document.getElementById("preview").onclick = () => {
-    //When First time loaded do this
-    mywindow = window.open("", "_blank", "toolbar=no,top=500,left=500,width=400,height=400")
+    
+    mywindow = window.open("https://editor.gunzip.repl.co/preview/", "_blank", "toolbar=no,top=500,left=500,width=400,height=400")
     document.body.style.opacity = "10%"
     var popupTick = setInterval(function () {
       if (mywindow.closed) {
@@ -356,44 +379,12 @@ window.onload = function (event) {
 
       }
     }, 500);
-    setTimeout(() => {
-      mywindow.document.write(`<html>
-      <head>
-      <style>
-      canvas{
-        width:100%;
-        height:100%;
-        overflow:hiden;
-      }
-      *{
-        overflow : hidden;
-        padding : 0px;
-        margin:0px;
-      }
-      </style>
-      <title>Made With Gunzip Engine</title>
-      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
-      </head>
-      <body>
-      <script>
-      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
-      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
-      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
-      </script>
-      ` + editorHtml.getValue() + `
-      <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
-      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);}}` + `</script></body>
-      </html>`);
-    }, 1000)
 
   }
   // @Important Stop Stops the everything
   document.getElementById("stop").onclick = () => {
     console.clear()
-    $("#debugger").show()
     setTimeout(() => {
       iframe.srcdoc = `<html>
       <head>
@@ -417,9 +408,13 @@ window.onload = function (event) {
       </style>
       </head>
       <body>  <script>
-      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
-      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
-      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p class = 'consoleCode' style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"
+      
+      }
+      console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
       </body>
@@ -452,11 +447,15 @@ window.onload = function (event) {
       <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
       </head>
+      <style media='all'>`+
+      editorCss.getValue().toString()
+      +`
+      </style>
       <body>
       ` + editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
-      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);};}` + `</script></body>
+      </div><script>window.onload=()=>{` + editorInit.getValue() + `</script></body>
       </html>`;
 
     name = prompt("Please Enter Your Game's name")
@@ -475,9 +474,11 @@ window.onload = function (event) {
   </head>
   <body>
    <script>
-      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
-      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
-      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p class = 'consoleCode' style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
   </body>
@@ -494,10 +495,13 @@ window.onload = function (event) {
   </head>
   <body>
    <script>
-      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
-      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
-      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p class = 'consoleCode' style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+       console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>
+     
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
   </body>
   </html>`
@@ -512,7 +516,7 @@ window.onload = function (event) {
     if (name !== undefined || name !== null || name !== "") {
       saveAs(new Blob([`localStorage.setItem('codeHtml','` + localStorage.getItem('codeHtml').toString() + `');
 localStorage.setItem('codeInit','`+ localStorage.getItem('codeInit').toString() + `');
-localStorage.setItem('codeUpdate','`+ localStorage.getItem('codeUpdate').toString() + `')`], { type: "text/plain" }), name + ".gunzip")
+localStorage.setItem('codeCss','`+ localStorage.getItem('codeCss').toString() + `')`], { type: "text/plain" }), name + ".gunzip")
       document.getElementById("ExportingPopup").style.display = "block"
       setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
       iframe.srcdoc = `<!DOCTYPE html>
@@ -523,9 +527,11 @@ localStorage.setItem('codeUpdate','`+ localStorage.getItem('codeUpdate').toStrin
   </head>
   <body>
    <script>
-      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
-      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
-      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p class = 'consoleCode' style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
   </body>
@@ -542,15 +548,60 @@ localStorage.setItem('codeUpdate','`+ localStorage.getItem('codeUpdate').toStrin
   </head>
   <body>
    <script>
-      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
-      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
-      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p class = 'consoleCode' style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
   </body>
   </html>`
     }
   }
+  //Export to EMBEDDED
+  document.getElementById("build4").onclick = () => {
+     
+      document.getElementById("embeddedExportText").value = `<html>
+      <head>
+      <title>Made With Gunzip Engine</title>
+      <style>
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      canvas{
+        width:100%;
+        height:100%;
+        overflow:hiden;
+      }
+      *{
+        overflow : hidden;
+        padding : 0px;
+        margin:0px;
+      }
+      </style>
+      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+      </head>
+      <style media='all'>`+
+      editorCss.getValue().toString()
+      +`
+      </style>
+      <body>
+      ` + editorHtml.getValue() + `
+      <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
+      
+      </div><script>window.onload=()=>{` + editorInit.getValue() + `</script></body>
+      </html>`
+      
+      document.getElementById("ExportingPopup").style.display = "block"
+      setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+
+
+    }
   //Export to Gif or png
   document.getElementById("build3").onclick = () => {
 
@@ -589,7 +640,7 @@ localStorage.setItem('codeUpdate','`+ localStorage.getItem('codeUpdate').toStrin
       ` + editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
-      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorUpdate.getValue() + `},10);};}` + `</script>
+      </div><script>window.onload=()=>{window.onload=()=>{` + editorInit.getValue() + `};setInterval(()=>{` + editorCss.getValue() + `},10);};` + `</script>
       <script>
       window.onload =()=>{
       domtoimage.toBlob(document.querySelector('*'))
@@ -608,9 +659,11 @@ localStorage.setItem('codeUpdate','`+ localStorage.getItem('codeUpdate').toStrin
   </head>
   <body>
    <script>
-      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
-      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
-      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p class = 'consoleCode' style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
   </body>
@@ -624,9 +677,11 @@ localStorage.setItem('codeUpdate','`+ localStorage.getItem('codeUpdate').toStrin
   </head>
   <body>
    <script>
-      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
-      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
-      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p class = 'consoleCode' style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
+      console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
+      console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+      console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>
   <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
   </body>

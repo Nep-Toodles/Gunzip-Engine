@@ -9,18 +9,39 @@
     pointer-events:none;
   }
 </style>
+<script src="main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 	<script src="frameworks/materialize.min.js">
 	</script>
 	<script src="frameworks/jquery.js">
 	</script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="frameworks/materialize.css">
-	<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase.js">
-
-	</script>
+	<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase.js"></script>
 </head>
 
-<body class="blue darken-3 " style="width: 100%;height: auto;">
+<body class="blue darken-3" style="width: 100%;height: auto;">
+  <ul id="slide-out" class="sidenav">
+    <li><a class="mainmenu btn">MainMenu</a></li>
+    <li><a class="projectmenu btn">Community Projects</a></li>
+    <li><a class="posts btn">Posts</a></li>
+  </ul>
+        
+  <div class="navbar-fixed">
+  <nav>
+    <div class="nav-wrapper green">
+      
+      <a style="margin:0%;padding:0;height:50%;" href="https://editor.gunzip.repl.co/" class="brand-logo"><img loading="lazy" src="images/logo.gif"/></a> 
+       <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a id="mainmenu">Your Projects</a></li>
+        <li><a id="projectmenu" href="#">Community Projects</a></li>
+        <li><a id="posts">Posts</a></li>
+        
+      </ul>
+    </div>
+  </nav>
+  </div>
 	<div style="background:url(https://cdn.dribbble.com/users/1585453/screenshots/6732255/comp_1.gif);" id="uploadProject" class="modal">
 		<div class="modal-content">
 			<h1 align="center" class="waves-effect">Put your html file here</h1>
@@ -37,20 +58,23 @@
       <div class="waves-effect">[✔] By Uploading You accept that it is doesnt voilate any child.</div>
     </div>
   </div>
-	<header style="margin:0%;" class="blue row">
-		<div style="margin: 0%;padding:0%;width: 100%;" class="waves-effect flow-text center centar-align blue lighten-3 green-text  card-header ">
-			Gunzip Engine
-		</div>
-	</header>
-
-	<a style="width:30%;" class="btn waves-effect lighten-1 grey left modal-trigger" href="./2d.html">Open Editor</a>
-	<label style="width:30%;" class="btn right large">
-        <input id="projectPicker"  type="file" single style="width:20%;display: none;" value="open Project"
-            class="btn grey waves-effect darken-1 right" />
+<div id="projectAdvancedSection">
+	<a style="width:50%;" class="btn waves-effect lighten-1 grey left modal-trigger" href="./2d.html">Open Editor</a>
+	<label style="width:50%;" class="btn left large">
+        <input id="projectPicker" type="file" single style="width:20%;display: none;" value="open Project"
+            class="btn grey waves-effect darken-1 left" />
         Open Project
     </label>
-    <div style="width:100%;" class="pannel  flow-text green waves-effect lighten-3">Community Projects</div>
-    <div class="projectContainer">
+    <div class="label green lighten-2 white-text center-align">Templates</div>
+    <div style="border:8px solid black;width:100%;overflow:hidden;height:100%;positon:relative;" id="localprojects">
+      <img src="https://thumbs.gfycat.com/OptimalSlipperyAzurewingedmagpie-size_restricted.gif" alt="">
+      <div style="height:40px" class="green white-text">Platformer Template <div class="btn white green-text waves-effect right-align" id="platformerDownload">Download</div></div><br>
+    </div>
+    </div>
+    <div id="postsContainer">
+
+    </div>
+    <div id="projectContainer">
       <button class="btn black modal-trigger" data-target="uploadProject" href="uploadProject" style="width:100%;margin:0%;" >Upload Project</button>
         <div id="projects" class="" style="width:100%;height:20%;overflow:auto;direction:ltr;"><img style="width:100%;height:500px;position:relative;" src="https://i2.wp.com/onemansblog.com/wp-content/uploads/2016/05/Octopus-Loading.gif?fit=800%2C600&ssl=1" alt=""></div>
     </div>
@@ -59,6 +83,7 @@
  
 <script>
    document.addEventListener('DOMContentLoaded', function() {
+     
      var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems);
     var elems = document.querySelectorAll('.modal');
@@ -77,7 +102,9 @@
     measurementId: "G-SBE6QXGMPH"
   };
   // Initialize Firebase
+  
   firebase.initializeApp(firebaseConfig);
+  firebase.analytics()
   function uploadToWeb(a){
     firebase.database().ref("projects/").push({
       name : document.getElementById("exportToWebName").value,
@@ -101,6 +128,16 @@
 ref.orderByChild("vote").on("value", function(snapshot) {
   document.getElementById("projects").innerHTML = ""
    snapshot.forEach((it,id)=>{
+     var storage = firebase.storage().ref("/websites/"+it.val().name.toString())
+     storage.put(new File([it.val().codeHtml.toString()],it.val().name.toString(), {
+      type: "text/html",
+      })).on("state_changed",(snap)=>{
+        console.log(snap)
+      },(e)=>{
+        alert(e.toString() + " Happened 😯")
+      },()=>{
+        console.log("Success Full")
+      })
       var container = document.createElement("div")
       var likeButton = document.createElement("button")
       var dislikeButton = document.createElement("button")
@@ -119,20 +156,24 @@ ref.orderByChild("vote").on("value", function(snapshot) {
       projectName.innerHTML += "<br><i>Votes : </i>" + it.val().vote.toString()
       likeButton.className="btn green left waves-effect"
       likeButton.innerText = "👍"
-      likeButton.onclick = (ev)=>{
-        ev.preventDefault()
-        likeButton.classList.add("disabled")
+      likeButton.style.display = "none"
+      likeButton.addEventListener("click",(ev)=>{
         var johnRef = firebase.database().ref("projects/"+it.key.toString());
         johnRef.update ({
         "vote": it.val().vote + 1
           });
-      }
+        ev.preventDefault()
+        ev.target.style.disabled = true
+        ev.target.classList.add("disabled")
+        
+      })
       dislikeButton.onclick = ()=>{ 
-        dislikeButton.classList.add("disabled")
         var johnRef = firebase.database().ref("projects/"+it.key.toString());
         johnRef.update ({
         "vote": it.val().vote - 1
         });
+        ev.target.style.disabled = true
+        ev.target.classList.add("disabled")
        
       }
       dislikeButton.className="btn red left waves-effect"
@@ -143,7 +184,7 @@ ref.orderByChild("vote").on("value", function(snapshot) {
       likeButton.style = "margin:0%;"
       playButton.style = "width:70%;margin:0%;"
       playButton.onclick = ()=>{
-        window.open('gunzipnet.com','/Bibekz').document.write(it.val().codeHtml.toString());
+        window.open('https://firebasestorage.googleapis.com/v0/b/gunzipz.appspot.com/o/websites%2F'+it.val().name.toString() + "?alt=media&token=9ac0b502-3ac6-4870-bf43-2cd2e82dacc7",'/Bibekz')  //.document.write(it.val().codeHtml.toString());
       }
       container.appendChild(projectName)
       container.appendChild(image)

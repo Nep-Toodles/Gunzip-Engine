@@ -70,18 +70,21 @@ button{
 *{margin: 0%;}
 #editorInitContainer{
    
-  height:200px;
+  height:25%;
   width:100%;
+  overflow-y:hidden;
 }
-#editorUpdateContainer{
-   
-  height:200px;
+#editorCssContainer{
+   height:28%;
   width:100%;
+  overflow-y:hidden;
 }
 #editorHtmlContainer{
-   
-  height:200px;
+  top: 0; right: 0; bottom: 0; left: 0; 
+  height:28%;
+  position:relative;
   width:100%;
+  overflow-y:hidden;
 }
 #editorHtml{ 
 
@@ -101,11 +104,11 @@ button{
     right: 0;
     bottom: 0;
     left: 0;
-    overflow: hidden;
+    overflow-y: hidden;
     position: relative;
     height: 600px;
 }
-#editorUpdate{ 
+#editorCss{ 
   top: 0;
   right: 0;
   bottom: 0;
