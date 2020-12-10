@@ -262,19 +262,27 @@ window.onload = function (event) {
   document.getElementById("scriptingWindow").style.display = "none"; //By deafult it is hidden
   //Events of Tab Window Start
   document.getElementById("imageView").onclick = () => {
-    document.getElementById("scriptView").style.width = "25.7%"
-    document.getElementById("sceneView").style.width = "25%"
-    document.getElementById("imageView").style.width = "36%"
     document.getElementById("imageMenu").style.display = "block";
     document.getElementById("consoleWindow").style.display = "none";
     document.getElementById("scenesMenu").style.display = "none";
     document.getElementById("scriptingWindow").style.display = "none";
   }
+    document.getElementById("sceneView1").onclick = () => {
+    document.getElementById("consoleWindow").style.display = "none";
+    document.getElementById("imageMenu").style.display = "none";
+    document.getElementById("scenesMenu").style.display = "block";
+    document.getElementById("scriptingWindow").style.display = "none";
+
+  }
+   document.getElementById("sceneView2").onclick = () => {
+    document.getElementById("consoleWindow").style.display = "none";
+    document.getElementById("imageMenu").style.display = "none";
+    document.getElementById("scenesMenu").style.display = "block";
+    document.getElementById("scriptingWindow").style.display = "none";
+
+  }
   document.getElementById("sceneView").onclick = () => {
     document.getElementById("consoleWindow").style.display = "none";
-    document.getElementById("scriptView").style.width = "25%"
-    document.getElementById("sceneView").style.width = "36%"
-    document.getElementById("imageView").style.width = "25.7%"
     document.getElementById("imageMenu").style.display = "none";
     document.getElementById("scenesMenu").style.display = "block";
     document.getElementById("scriptingWindow").style.display = "none";
@@ -295,9 +303,6 @@ window.onload = function (event) {
     editorHtml.setValue(localStorage.getItem("codeHtml"))
     editorHtml.focus()
     editorHtml.moveCursorTo(0, 0);
-    document.getElementById("scriptView").style.width = "36%"
-    document.getElementById("sceneView").style.width = "25.7%"
-    document.getElementById("imageView").style.width = "25%"
     document.getElementById("imageMenu").style.display = "none";
     document.getElementById("scenesMenu").style.display = "none";
     document.getElementById("scriptingWindow").style.display = "block";
@@ -607,7 +612,7 @@ localStorage.setItem('codeCss','`+ localStorage.getItem('codeCss').toString() + 
   //Export to EMBEDDED
   document.getElementById("build4").onclick = () => {
 
-    document.getElementById("embeddedExportText").innerText = `<iframe srcdoc="` + `<html>
+    document.getElementById("embededExportText").innerText = `<iframe srcdoc="` + `<html>
       <head>
       <title>Made With Gunzip Engine</title>
       <script src="https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
