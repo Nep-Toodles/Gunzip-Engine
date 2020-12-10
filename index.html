@@ -22,9 +22,9 @@
 
 <body class="blue darken-3" style="width: 100%;height: auto;">
   <ul id="slide-out" class="sidenav">
-    <li><a class="mainmenu btn">MainMenu</a></li>
+    <li><a class="mainmenu btn">Your Menu</a></li>
     <li><a class="projectmenu btn">Community Projects</a></li>
-    <li><a class="posts btn">Posts</a></li>
+    <li><a class="posts btn">Community Posts</a></li>
   </ul>
         
   <div class="navbar-fixed">
@@ -34,9 +34,9 @@
       <a style="margin:0%;padding:0;height:50%;" href="https://editor.gunzip.repl.co/" class="brand-logo"><img loading="lazy" src="images/logo.gif"/></a> 
        <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">menu</i></a>
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a id="mainmenu">Your Projects</a></li>
+        <li><a id="mainmenu">Your Menu</a></li>
         <li><a id="projectmenu" href="#">Community Projects</a></li>
-        <li><a id="posts">Posts</a></li>
+        <li><a id="posts">Community Posts</a></li>
         
       </ul>
     </div>
@@ -60,7 +60,7 @@
   </div>
 <div id="projectAdvancedSection">
 	<a style="width:50%;" class="btn waves-effect lighten-1 grey left modal-trigger" href="./2d.html">Open Editor</a>
-	<label style="width:50%;" class="btn left large">
+	<label style="width:50%;" class="btn purple left large">
         <input id="projectPicker" type="file" single style="width:20%;display: none;" value="open Project"
             class="btn grey waves-effect darken-1 left" />
         Open Project
@@ -72,7 +72,13 @@
     </div>
     </div>
     <div id="postsContainer">
-
+        <textarea style="height:80px;width:100%;resize:none;" placeholder="Share framework cdns , frameworks , codebits,etc" class="textarea" id="postText"># This is Markdown h1 tag</textarea>
+      <button style="width:100%" class="btn btn-plain white blue-text" id="uploadPostOfUser">Post it</button>
+      <div id="userPostsContainer">
+        <div id="userPosts">
+          <img src="https://i.pinimg.com/originals/e9/29/1e/e9291eaddacd460280a34a151dcc5cc4.gif" alt="">
+        </div>
+      </div>
     </div>
     <div id="projectContainer">
       <button class="btn black modal-trigger" data-target="uploadProject" href="uploadProject" style="width:100%;margin:0%;" >Upload Project</button>
@@ -105,10 +111,29 @@
   
   firebase.initializeApp(firebaseConfig);
   firebase.analytics()
+  if(localStorage.getItem("gunzipserveruserName") == undefined || localStorage.getItem("gunzipserveruserName") == null){
+  providerOfGoogle = new firebase.auth.GoogleAuthProvider()
+  firebase.auth().signInWithPopup(providerOfGoogle).then(function(result) {
+  window.user = result.user.displayName;
+  localStorage.setItem("gunzipserveruserName",result.user.displayName.toString())
+}).catch(function(error) {
+  // Handle Errors here.
+  console.log(error)
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // The email of the user's account used.
+  var email = error.email;
+  // The firebase.auth.AuthCredential type that was used.
+  var credential = error.credential;
+  // ...
+});
+
+}
   function uploadToWeb(a){
     firebase.database().ref("projects/").push({
       name : document.getElementById("exportToWebName").value,
       codeHtml : a.toString(),
+      vote : 0,
     })
   }
   function UploadProject(){
@@ -125,7 +150,7 @@
   function deploy(){
     var ref = firebase.database().ref("projects/");
 
-ref.orderByChild("vote").on("value", function(snapshot) {
+ref.on("value", function(snapshot) {
   document.getElementById("projects").innerHTML = ""
    snapshot.forEach((it,id)=>{
      var storage = firebase.storage().ref("/websites/"+it.val().name.toString())

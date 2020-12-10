@@ -1,33 +1,91 @@
 //On error Reload Automatically
 
-window.onerror = ()=> location.reload()
+window.onerror = () => location.reload()
 document.addEventListener('DOMContentLoaded', (event) => {
   document.querySelectorAll('.consoleCode').forEach((block) => {
     hljs.highlightBlock(block);
   });
 });
 
-//Read Image a url
-function encodeImageFileAsURL(element) {
-  var file = element.files[0];
-  var reader = new FileReader();
-  reader.onloadend = function () {
-    document.getElementById("ImageCode").innerText = reader.result
-  }
-  reader.readAsDataURL(file);
-}
+
 window.ondrag = (ev) => {
   ev.preventDefault()
   ev.stopPropagation()
 }
 window.onload = function (event) {
+  const input = document.getElementById('clientimageinput');
+  const preview = document.querySelector('.previewOfClientImages');
+
+  input.style.opacity = 0;
+  input.addEventListener('change', updateImageDisplay);
+
+  function updateImageDisplay() {
+
+    const curFiles = input.files;
+    if (curFiles.length === 0) {
+      const para = document.createElement('p');
+      para.textContent = 'No files currently selected for upload';
+      preview.appendChild(para);
+    } else {
+      const list = document.createElement('ol');
+      preview.appendChild(list);
+
+      for (const file of curFiles) {
+        const listItem = document.createElement('li');
+        const para = document.createElement('p');
+        if (validFileType(file)) {
+          
+          const image = document.createElement('img');
+          image.src = URL.createObjectURL(file);
+          para.innerHTML = `File :<label class='green'> ${image.src} </label>`;
+          listItem.appendChild(image);
+          listItem.appendChild(para);
+        } else {
+          para.textContent = `File name ${file.name}: Not a valid file type. Update your selection.`;
+          listItem.appendChild(para);
+        }
+
+        list.appendChild(listItem);
+      }
+    }
+  } // https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
+  const fileTypes = [
+    "image/apng",
+    "image/bmp",
+    "image/gif",
+    "image/jpeg",
+    "image/pjpeg",
+    "image/png",
+    "image/svg+xml",
+    "image/tiff",
+    "image/webp",
+    "image/x-icon"
+  ];
+
+  function validFileType(file) {
+    return fileTypes.includes(file.type);
+  }
+
+  function returnFileSize(number) {
+    if (number < 1024) {
+      return number + 'bytes';
+    } else if (number >= 1024 && number < 1048576) {
+      return (number / 1024).toFixed(1) + 'KB';
+    } else if (number >= 1048576) {
+      return (number / 1048576).toFixed(1) + 'MB';
+    }
+  }
+
+
+
+
   document.getElementById("termux-input").onchange = (e) => {
     try {
       e.preventDefault()
       iframe.contentWindow.eval(e.target.value)
       e.target.value = ""
     } catch (e) {
-      document.getElementById("termux").innerHTML += `<p class = 'consoleCode'>` +e.toString() +`</p>`
+      document.getElementById("termux").innerHTML += `<p class = 'consoleCode'>` + e.toString() + `</p>`
     }
 
   }
@@ -69,7 +127,7 @@ window.onload = function (event) {
 
   }
 
-  keyboardJS.bind("shift + F", (e) => {
+  keyboardJS.bind("alt + F", (e) => {
     e.preventDefault()
     beatify()
   })
@@ -172,9 +230,9 @@ window.onload = function (event) {
   ace.config.loadModule('ace/ext/language_tools')
 
   if (typeof localStorage.getItem("codeInit") == undefined || typeof localStorage.getItem("codeInit") == null) {
-      localStorage.setItem("codeInit", editorInit.getValue())
-      localStorage.setItem("codeCss", editorCss.getValue())
-      localStorage.setItem("codeHtml", editorHtml.getValue())
+    localStorage.setItem("codeInit", editorInit.getValue())
+    localStorage.setItem("codeCss", editorCss.getValue())
+    localStorage.setItem("codeHtml", editorHtml.getValue())
     function SaveNewCode() {
       beatify()
       localStorage.setItem("codeInit", editorInit.getValue())
@@ -189,6 +247,7 @@ window.onload = function (event) {
     beatify()
 
     function SaveNewCode() {
+      editorHtml.resize()
       localStorage.setItem("codeHtml", editorHtml.getValue())
       localStorage.setItem("codeInit", editorInit.getValue())
       localStorage.setItem("codeCss", editorCss.getValue())
@@ -279,9 +338,9 @@ window.onload = function (event) {
       //alert("machet");
       document.getElementById("iframe").contentWindow.focus();
     }
-    setInterval(()=>{
-      if(0 == 78){
-      iframe.srcdoc = `<html>
+    setInterval(() => {
+      if (0 == 78) {
+        iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
       <style>
@@ -305,23 +364,24 @@ window.onload = function (event) {
       console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
       console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
       console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
-      console.clear=(ev)=>{window.parent.document.getElementById("termux").innerHTML = "<p style='color:grey;'> >>>"+ev.toString()+"<p>"}
+       console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>
       ` + editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       <style media="all">
-    `+editorCss.getValue().toString()+`
+    `+ editorCss.getValue().toString() + `
     </style>
       </div>
       <script>`+
-       editorInit.getValue()
-       +`
+          editorInit.getValue()
+          + `
        </script>
       </body>
       </html>`;
-    }
-    },10)
-      iframe.srcdoc = `<html>
+      }
+    }, 10)
+    iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
       <style>
@@ -345,16 +405,18 @@ window.onload = function (event) {
       console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
       console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
       console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"}
+       console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       </script>
       ` + editorHtml.getValue() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       <style media="all">
-    `+editorCss.getValue().toString()+`
+    `+ editorCss.getValue().toString() + `
     </style>
       </div>
       <script>`+
-       editorInit.getValue()
-       +`
+      editorInit.getValue()
+      + `
        </script>
       </body>
       </html>`;
@@ -367,7 +429,7 @@ window.onload = function (event) {
   }
   //@Important  DEBUGGIN MODE
   document.getElementById("preview").onclick = () => {
-    
+
     mywindow = window.open("https://editor.gunzip.repl.co/preview/", "_blank", "toolbar=no,top=500,left=500,width=400,height=400")
     document.body.style.opacity = "10%"
     var popupTick = setInterval(function () {
@@ -379,7 +441,7 @@ window.onload = function (event) {
 
       }
     }, 500);
-      
+
 
   }
   // @Important Stop Stops the everything
@@ -411,7 +473,8 @@ window.onload = function (event) {
       console.log=(ev)=>{window.parent.document.getElementById("termux").innerHTML +=  "<p class = 'consoleCode' style='color:white;background:green;'> >>> "+ev.toString()+"<p>"}
       console.warn=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:white;background:yellow;'> >>>"+ev.toString()+"<p>"}
       console.error=(ev)=>{window.parent.document.getElementById("termux").innerHTML += "<p class = 'consoleCode' style='color:pink;background:red;'> >>>"+ev.toString()+"<p>"
-      
+       console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
+      }
       }
       console.clear=()=>{window.parent.document.getElementById("termux").innerHTML = "<p class = 'consoleCode' style='color:grey'> >>> Console Cleared<p>"
       }
@@ -426,36 +489,18 @@ window.onload = function (event) {
     iframe.srcdoc = `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <style>
-      *{
-        overflow : hidden;
-        padding : 0px;
-        margin:0px;
-      }
-      canvas{
-        width:100%;
-        height:100%;
-        overflow:hiden;
-      }
-      *{
-        overflow : hidden;
-        padding : 0px;
-        margin:0px;
-      }
-      </style>
-      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
       </head>
       <style media='all'>`+
       editorCss.getValue().toString()
-      +`
+      + `
       </style>
       <body>
-      ` + editorHtml.getValue() + `
+      ` + editorHtml.getValue().toString() + `
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
-      </div><script>window.onload=()=>{` + editorInit.getValue() + `</script></body>
+      </div><script>window.onload=()=>{` + editorInit.getValue().toString() + `}</script></body>
       </html>`;
 
     name = prompt("Please Enter Your Game's name")
@@ -561,47 +606,92 @@ localStorage.setItem('codeCss','`+ localStorage.getItem('codeCss').toString() + 
   }
   //Export to EMBEDDED
   document.getElementById("build4").onclick = () => {
-     
-      document.getElementById("embeddedExportText").value = `<html>
+
+    document.getElementById("embeddedExportText").innerText = `<iframe srcdoc="` + `<html>
       <head>
       <title>Made With Gunzip Engine</title>
-      <style>
-      *{
-        overflow : hidden;
-        padding : 0px;
-        margin:0px;
-      }
-      canvas{
-        width:100%;
-        height:100%;
-        overflow:hiden;
-      }
-      *{
-        overflow : hidden;
-        padding : 0px;
-        margin:0px;
-      }
-      </style>
-      <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ==" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
       </head>
-      <style media='all'>`+
-      editorCss.getValue().toString()
-      +`
+      <style media='all'>#html,
+#initjs,
+#csss {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
       </style>
       <body>
-      ` + editorHtml.getValue() + `
+      <!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Hello World</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=7,8,edge" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="row">
+        <div class="col s12">
+            <ul id="tabs" class="tabs">
+                <li class="tab col s3"><a href="#html">index.html</a></li>
+                <li class="tab col s3"><a class="active" href="#initjs">Init.js</a></li>
+                <li class="tab col s3"><a href="#csss">main.css</a></li>
+                <li class="tab col s3"><a id="preview" href="#mainpreview">Preview</a></li>
+            </ul>
+        </div>
+        <div id="html" class="col s12">`+ editorHtml.getValue().toString() + `</div>
+        <div id="csss" class="col s12">`+ editorCss.getValue().toString() + `</div>
+        <div id="initjs" class="col s12">`+ editorInit.getValue().toString() + `</div>
+        <div id="mainpreview" class="col s12">
+            <iframe id="previeww" src="" frameborder="0"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>
       <script>document.addEventListener('contextmenu', event => event.preventDefault());</script>
       
-      </div><script>window.onload=()=>{` + editorInit.getValue() + `</script></body>
-      </html>`
-      
-      document.getElementById("ExportingPopup").style.display = "block"
-      setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
+      </div><script>window.onload=()=>{editor1 = ace.edit("html")
+editor1.session.setMode("ace/mode/html");
+editor1.setTheme("ace/theme/monokai");
+editor2 = ace.edit("csss")
+editor2.session.setMode("ace/mode/typescript")
+editor3 = ace.edit("initjs")
+editor3.session.setMode("ace/mode/typescript");
+editor3.setTheme("ace/theme/monokai");
+editor2.setTheme("ace/theme/monokai");
+editor1.setOptions({
+    fontSize: "18pt"
+});
+editor2.setOptions({
+    fontSize: "18pt"
+});
+editor3.setOptions({
+    fontSize: "18pt"
+});
+console.warn("No erros :)")
+document.getElementById('preview').onclick = () => {
+    document.getElementById("previeww").srcdoc = editor1.getValue().toString() + "<style>" + editor2.toString() + "</style>";
+    document.getElementById("previeww").contentWindow.window.eval(editor3.getValue())
+}
+var instance = M.Tabs.init(document.getElementById('tabs'));}</script></body>
+      </html>` + `"></iframe>`;
+
+    document.getElementById("ExportingPopup").style.display = "block"
+    setTimeout(() => { document.getElementById("ExportingPopup").style.display = "none" }, 1500)
 
 
-    }
+  }
   //Export to Gif or png
   document.getElementById("build3").onclick = () => {
 

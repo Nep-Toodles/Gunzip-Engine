@@ -5,7 +5,8 @@ Try out the Enviroment Live now by clicking here :
 > -"Just look the features not where it is made - idk"
 
 # features : 
-# Community Sharing : ![](https://cdn.discordapp.com/attachments/781591474146902016/785090069052129310/unknown.png)
+# Community Sharing : ![](https://media.discordapp.net/attachments/781591474146902016/786477178169720862/unknown.png?width=888&height=427)
+# Share Posts in Community POSTS!! : ![](https://media.discordapp.net/attachments/781591474146902016/786478806113976320/unknown.png?width=1025&height=397)
 # Most Simplest UI
 ![](https://cdn.discordapp.com/attachments/781591474146902016/785085620522844170/unknown.png)
 ## Full functional Preview 

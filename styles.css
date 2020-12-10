@@ -1,7 +1,6 @@
 button{
   cursor: url("https://www.shareicon.net/data/512x512/2016/06/06/776778_multimedia_512x512.png"), default;
 }
-
 #context-menu {
   position:fixed;
   z-index:10000;
@@ -70,7 +69,7 @@ button{
 *{margin: 0%;}
 #editorInitContainer{
    
-  height:25%;
+  height:100%;
   width:100%;
   overflow-y:hidden;
 }
@@ -84,7 +83,7 @@ button{
   height:28%;
   position:relative;
   width:100%;
-  overflow-y:hidden;
+  overflow-y:scroll;
 }
 #editorHtml{ 
 
@@ -94,9 +93,9 @@ button{
   right: 0;
   bottom: 0;
   left: 0;
-  overflow: hidden;
+  overflow-y: hidden;
   position: relative;
-  height: 600px;
+  height: 750px;
 }
 #editorInit { 
     top: 0;
