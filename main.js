@@ -1,4 +1,6 @@
 window.onload = () =>{
+  
+//The Imp-ortant Part
 setInterval(()=>{
   document.querySelector("a").target = "_blank"
 },100)

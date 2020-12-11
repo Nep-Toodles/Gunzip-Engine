@@ -1,12 +1,6 @@
 //On error Reload Automatically
 
 window.onerror = () => location.reload()
-document.addEventListener('DOMContentLoaded', (event) => {
-  document.querySelectorAll('.consoleCode').forEach((block) => {
-    hljs.highlightBlock(block);
-  });
-});
-
 
 window.ondrag = (ev) => {
   ev.preventDefault()
@@ -127,7 +121,7 @@ window.onload = function (event) {
 
   }
 
-  keyboardJS.bind("alt + F", (e) => {
+  keyboardJS.bind("shift + alt + F", (e) => {
     e.preventDefault()
     beatify()
   })
