@@ -88,14 +88,13 @@ button{
 #editorHtml{ 
 
   width: 100%;
-  
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   overflow-y: hidden;
   position: relative;
-  height: 750px;
+  height: 600px;
 }
 #editorInit { 
     top: 0;

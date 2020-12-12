@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<style>
+		html,
+		body {
+			margin: 0px;
+		}
+	</style>
+	<link rel="stylesheet" href="/frameworks/materialize.css">
+  <link rel="stylesheet" href="/icon.css">
+	<script src="/frameworks/materialize.min.js">
+	</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+	<div>
+		<label style="width:100%;" class="btn green waves-effect center">
+      Upload Images <i class="material-icons">cloud_upload</i>
+    <input type="file" id="image_uploads" accept=".jpg, .jpeg, .png" multiple>
+    </label>
+  </div>
+  <div id="preview" class="preview">
+
+  </div>
+<div class="grey white-text" style="width:100%;" id="userfiles">
+
+</div>
+
+
+
+
+<script src="https://www.gstatic.com/firebasejs/8.1.2/firebase.js"></script>
+<script>
+    var firebaseConfig = {
+    apiKey: "AIzaSyCAKdFF5_hgM3FnytEW45sQty5UzFFSiXQ",
+    authDomain: "gunzipz.firebaseapp.com",
+    databaseURL: "https://gunzipz.firebaseio.com",
+    projectId: "gunzipz",
+    storageBucket: "gunzipz.appspot.com",
+    messagingSenderId: "255063467474",
+    appId: "1:255063467474:web:c6ab4f3923071b4ce5d40b",
+    measurementId: "G-SBE6QXGMPH"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  storageu = firebase.storage().ref()
+  savedImages = storageu.child("client_storage/"+localStorage.getItem("gunzipserveruserName"))
+  savedImages.listAll().then(function(res){
+    res.items.forEach(function(itemRef) {
+    img = document.createElement("img")
+    img.loading = "lazy"
+    img.src = `https://firebasestorage.googleapis.com/v0/b/gunzipz.appspot.com/o/client_storage%2F`+localStorage.getItem("gunzipserveruserName")+"%2F"+itemRef.name.toString()+`?alt=media&token=028b3364-391f-43b0-b79a-12481721625c`
+    document.getElementById('preview').appendChild()
+    document.getElementById('preview').appendChild(img)
+  });
+  })
+  const input = document.querySelector('input');
+    const preview = document.querySelector('.preview')
+
+    input.style.opacity = 0;
+
+    input.addEventListener('change', updateImageDisplay);
+
+    function updateImageDisplay() {
+      const curFiles = input.files;
+      if(curFiles.length === 0) {
+      } else {
+        const list = document.createElement('ol');
+        
+        preview.appendChild(list);
+
+        for(const file of curFiles) {
+          const listItem = document.createElement('li');
+          const parm = document.createElement("p")
+         
+          if(validFileType(file)) {
+            const image = document.createElement('img');
+            image.src = URL.createObjectURL(file);
+            storage = firebase.storage().ref()
+           savedImage = storage.child("client_storage/"+localStorage.getItem("gunzipserveruserName") +"/"+file.name.toString()).put(file)
+            parm.innerText = "https://firebasestorage.googleapis.com/v0/b/gunzipz.appspot.com/o/client_storage%2F"+localStorage.getItem("gunzipserveruserName")+"%2F"+file.name.toString()+"?alt=media&token=028b3364-391f-43b0-b79a-12481721625c";
+          listItem.appendChild(image);
+          listItem.appendChild(parm)
+          } else {
+            M.toast({html : "Your File Type was not vaild Please try gain Later"})
+          }
+         
+          list.appendChild(listItem);
+        }
+      }
+    }
+
+// https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
+    const fileTypes = [
+        'image/apng',
+        'image/bmp',
+        'image/gif',
+        'image/jpeg',
+        'image/pjpeg',
+        'image/png',
+        'image/svg+xml',
+        'image/tiff',
+        'image/webp',
+        `image/x-icon`
+    ];
+
+    function validFileType(file) {
+      return fileTypes.includes(file.type);
+    }
+
+    function returnFileSize(number) {
+      if(number < 1024) {
+        return number + 'bytes';
+      } else if(number > 1024 && number < 1048576) {
+        return (number/1024).toFixed(1) + 'KB';
+      } else if(number > 1048576) {
+        return (number/1048576).toFixed(1) + 'MB';
+      }
+    }
+</script>
+</body>
+</html>

@@ -4,6 +4,15 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Gunzip</title>
+  <style>
+    ::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+  </style>
 <script src="main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 	<script src="frameworks/materialize.min.js">
@@ -54,6 +63,11 @@
     </div>
   </div>
 <div id="projectAdvancedSection">
+
+  <div style="marign:0%;padding:0%;width:100%;height:auto;" class="white green-text waves-effect ">
+    <img id="userPhoto" class="left responsive-img circle" style="width:16%;height:auto;border-radius:190%;" alt="">
+    <h2 id="userName">  Anonymous</h2>
+  </div>
 	<a style="width:50%;" class="btn waves-effect lighten-1 grey left modal-trigger" target="_blank" href="./2d.html">Open Editor</a>
 	<label style="width:50%;" class="btn purple left large">
         <input id="projectPicker" type="file" single style="width:20%;display: none;" value="open Project"
@@ -64,9 +78,11 @@
     <div style="border:8px solid black;width:100%;overflow:hidden;height:100%;positon:relative;" id="localprojects">
       <div style="height:40px" class="green white-text">Platformer Template</div> 
       <img src="https://thumbs.gfycat.com/OptimalSlipperyAzurewingedmagpie-size_restricted.gif" style="width:100%;" alt="">
-      <div class="btn white green-text waves-effect right-align" id="platformerDownload">Download</div><br>
+      <div class="btn white green-text waves-effect right-align" style="width:100%" id="platformerDownload">Download</div><br>
     </div>
-    </div>
+
+
+</div>
     <div id="postsContainer">
         <textarea style="height:80px;width:100%;resize:none;" placeholder="Share framework cdns , frameworks , codebits,etc" class="textarea" id="postText"># This is Markdown h1 tag</textarea>
       <button style="width:100%" class="btn btn-plain white blue-text" id="uploadPostOfUser">Post it</button>
@@ -105,19 +121,32 @@
   };
   // Initialize Firebase
   
+  
   firebase.initializeApp(firebaseConfig);
   firebase.analytics()
+  console.log(firebase.auth())
+  var userofsite = firebase.auth().currentUser;
+if (userofsite != null) {
+  document.getElementById("userPhoto").src = userofsite.photoURL.toString() || "https://hackernoon.com/images/0*QdX-f4eHiimvQZoZ.gif"
+}else{
+  document.getElementById("userPhoto").src ="https://hackernoon.com/images/0*QdX-f4eHiimvQZoZ.gif"
+}
   if(localStorage.getItem("gunzipserveruserName") == undefined || localStorage.getItem("gunzipserveruserName") == null){
   providerOfGoogle = new firebase.auth.GoogleAuthProvider()
   firebase.auth().signInWithPopup(providerOfGoogle).then(function(result) {
   window.user = result.user.displayName;
+  photoURL = result.user.photoURL;
   user = result.user.displayName;
   localStorage.setItem("gunzipserveruserName",result.user.displayName.toString())
+  localStorage.setItem("gunzipserveruserPhoto",result.user.photoURL.toString())
+  document.getElementById("userPhoto").src = result.user.photoURL.toString() || "https://hackernoon.com/images/0*QdX-f4eHiimvQZoZ.gif"
   M.toast({html: 'Logged In as : ' + window.user.toString()})
 }).catch(function(error) {
   M.toast({html: error.message+'.'})
 });
-
+}else{
+  document.getElementById("userName").innerText = localStorage.getItem("gunzipserveruserName") || "Anonymous"
+  document.getElementById("userPhoto").src = localStorage.getItem("gunzipserveruserPhoto").toString() || "https://hackernoon.com/images/0*QdX-f4eHiimvQZoZ.gif"
 }
   function uploadToWeb(a){
     firebase.database().ref("projects/").push({

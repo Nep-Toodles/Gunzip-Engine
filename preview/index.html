@@ -6,6 +6,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Gunzip preview</title>
 	<link rel="shortcut icon" href="lol.png" type="image/png">
+<style>
+
+  iframe{
+    position:absolute;
+    width:100%;
+    height:100%;
+  }
+  body,html{
+    margin:0%;
+    padding:0%;
+  }
+</style>
 	<script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js">
 	</script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/keyboardjs/2.6.2/keyboard.min.js" integrity="sha512-Q9aijJKP9BeTXgQHmb/j8AZTQ15//k9QvGXCbKMf1bt289s75awi/3SBFZ3M3J27NtD7JyU3d9d1eRPuO4BbhQ=="
@@ -14,9 +26,11 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js">
 	</script>
 </head>
-
 <body>
-	<script crossorigin="anonymous" src="main.js">
+<iframe id="iframe" frameborder="0">
+
+</iframe>
+	<script src="main.js">
 	</script>
 </body>
 
