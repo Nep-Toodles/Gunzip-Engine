@@ -58,11 +58,7 @@
 </head>
 
 <body>
-
-
-
-
-  <!--FIRE BASE END-->
+<div id="loading"><img style="width:100%;height:100%;" src="images/loading.gif" alt=""></div>
 
 	<div style="position:absolute;width:100%;height:100%align:center;z-index:500;display:none;" id="ExportingPopup">
 		<img src="https://media2.giphy.com/media/3o6ZsYLRb6IG6vAkcU/giphy.gif" alt="" loading="lazy">
@@ -170,18 +166,22 @@
             <!--IMAGED WINDOW-->
             <div style="display:none;overflow: hidden;" id="imageMenu">
               <div id="sceneView2" class="btn white red-text waves-effect" style="width:100%;"><i class="material-icons">close</i></div>
-              <iframe src="storage/index.html" frameborder="0" style="width:100%;height:100%;"></iframe>
+              <iframe src="storage/index.html" id="imagestorage" frameborder="0" style="width:100%;height:100%;overflow-y:scroll;">
+              </iframe>
+           <script>
+             document.getElementById("imagestorage").style.height = window.innerHeight + "px"
+           </script>
             </div>
            
         
-        <div style="height: 50%;" id="scriptingWindow">
+        <div id="scriptingWindow">
 
             
-            <div id="files" style="width: auto;height: 100%;margin:0%;" class="pannel blue lighten-3 row">
-              <div id="sceneView" class="btn waves-effrect white red-text left"><i class="material-icons">close</i></div>
+            <div id="files" style="width: auto;height: 100%;margin:0%;" class="pannel yellow lighten-3 row">
+              <div id="sceneView" class="btn waves-effrect white red-text left" style="width:3.7%;"><i class="material-icons">close</i></div>
               <div id="html" style="width: 32.1%;"  class="tooltipped left btn waves-effect white-text red lighten-1" data-position="top" data-tooltip="index.html file">main.<i>html</i><span class="iconify" data-icon="vscode-icons:file-type-html" data-inline="false"></span></div>
-                            <div id="css" style="width: 33%;"  class="tooltipped left btn waves-effect blue white-text lighten-1" data-position="top" data-tooltip="Update.js file">index.<i>css</i> <span class="iconify" data-icon="vscode-icons:file-type-css" data-inline="false"></span></div>
-                <div id="init" style="width: 31%;" class="btn left waves-effect huge yellow white-text lighten-1">init.<i>js</i><span class="iconify" data-icon="logos:javascript" data-inline="false"></span></div>
+                            <div id="css" style="width: 32%;"  class="tooltipped left btn waves-effect blue white-text lighten-1" data-position="top" data-tooltip="Update.js file">index.<i>css</i> <span class="iconify" data-icon="vscode-icons:file-type-css" data-inline="false"></span></div>
+                <div id="init" style="width: 30%;" class="btn left waves-effect huge yellow white-text lighten-1">init.<i>js</i><span class="iconify" data-icon="logos:javascript" data-inline="false"></span></div>
                 
                         
                         </div>

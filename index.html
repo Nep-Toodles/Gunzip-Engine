@@ -65,8 +65,8 @@
 <div id="projectAdvancedSection">
 
   <div style="marign:0%;padding:0%;width:100%;height:auto;" class="white green-text waves-effect ">
-    <img id="userPhoto" class="left responsive-img circle" style="width:16%;height:auto;border-radius:190%;" alt="">
-    <h2 id="userName">  Anonymous</h2>
+    <img id="userPhoto" class="left responsive-img circle" style="width:8%;height:auto;border-radius:190%;" alt="">
+    <h4 id="userName">  Anonymous</h4>
   </div>
 	<a style="width:50%;" class="btn waves-effect lighten-1 grey left modal-trigger" target="_blank" href="./2d.html">Open Editor</a>
 	<label style="width:50%;" class="btn purple left large">
@@ -137,9 +137,11 @@ if (userofsite != null) {
   window.user = result.user.displayName;
   photoURL = result.user.photoURL;
   user = result.user.displayName;
+  
   localStorage.setItem("gunzipserveruserName",result.user.displayName.toString())
   localStorage.setItem("gunzipserveruserPhoto",result.user.photoURL.toString())
-  document.getElementById("userPhoto").src = result.user.photoURL.toString() || "https://hackernoon.com/images/0*QdX-f4eHiimvQZoZ.gif"
+  document.getElementById("userPhoto").src = result.user.photoURL.toString() || "https://hackernoon.com/images/0*QdX-f4eHiimvQZoZ.gif";
+   
   M.toast({html: 'Logged In as : ' + window.user.toString()})
 }).catch(function(error) {
   M.toast({html: error.message+'.'})

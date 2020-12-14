@@ -7,6 +7,9 @@ window.ondrag = (ev) => {
   ev.stopPropagation()
 }
 window.onload = function (event) {
+  setTimeout(()=>{
+    document.getElementById("loading").style.display = "none"
+  },2000)
   document.getElementById("termux-input").onchange = (e) => {
     try {
       e.preventDefault()

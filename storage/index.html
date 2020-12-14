@@ -16,19 +16,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
-<body>
+<body bgcolor="white">
 	<div>
 		<label style="width:100%;" class="btn green waves-effect center">
       Upload Images <i class="material-icons">cloud_upload</i>
     <input type="file" id="image_uploads" accept=".jpg, .jpeg, .png" multiple>
     </label>
   </div>
-  <div id="preview" class="preview">
+  <div style="width:100%;height:auto;" id="preview" class="preview">
 
   </div>
-<div class="grey white-text" style="width:100%;" id="userfiles">
-
-</div>
 
 
 
@@ -52,10 +49,14 @@
   savedImages = storageu.child("client_storage/"+localStorage.getItem("gunzipserveruserName"))
   savedImages.listAll().then(function(res){
     res.items.forEach(function(itemRef) {
+    url = document.createElement("p")
     img = document.createElement("img")
+    
     img.loading = "lazy"
     img.src = `https://firebasestorage.googleapis.com/v0/b/gunzipz.appspot.com/o/client_storage%2F`+localStorage.getItem("gunzipserveruserName")+"%2F"+itemRef.name.toString()+`?alt=media&token=028b3364-391f-43b0-b79a-12481721625c`
-    document.getElementById('preview').appendChild()
+    url.innerText = img.src
+    url.style.color = "green"
+    document.getElementById('preview').appendChild(url)
     document.getElementById('preview').appendChild(img)
   });
   })
